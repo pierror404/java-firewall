@@ -64,7 +64,7 @@ public class IPv4 {
 		String[] numbers;
 		short first, second, third, fourth;
 		IPv4 result;
-		numbers = ip.split(".");
+		numbers = ip.split("\\.");
 		if(numbers.length != 4)
 			throw new IllegalIPv4Exception("illegal IPv4 parsing: " + ip);
 		first = Short.parseShort(numbers[0]);
