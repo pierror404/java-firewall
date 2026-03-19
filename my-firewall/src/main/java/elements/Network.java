@@ -74,6 +74,6 @@ public class Network {
 		String[] divided = ipAndSubnet.split("/");
 		if(divided.length != 2)
 			throw new IllegalArgumentException("illegal network parsing: must use networkIP/subnetmask");
-		return new Network(IPv4.fromString(divided[0]), SubnetMask.fromString(divided[1], true));
+		return new Network(IPv4.fromString(divided[0]), SubnetMask.fromString("/"+divided[1]));
 	}
 }

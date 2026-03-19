@@ -8,10 +8,19 @@
   
   <dependencies>
 
+	<!-- FOR PACKET SNIFFING -->
     <dependency>
         <groupId>org.pcap4j</groupId>
         <artifactId>pcap4j-core</artifactId>
         <version>1.8.2</version>
+    </dependency>
+    
+    <!-- FOR TESTING -->
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>5.10.2</version>
+        <scope>test</scope>
     </dependency>
 
 </dependencies>

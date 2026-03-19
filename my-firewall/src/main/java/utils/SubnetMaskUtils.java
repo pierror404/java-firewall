@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.Optional;
+
 public class SubnetMaskUtils {
 	public static short[] fromSlashToSubnet(short slashNotation) {
         int mask = 0xffffffff << (32 - slashNotation);
@@ -38,5 +40,32 @@ public class SubnetMaskUtils {
 	    }
 
 	    return prefix;
+	}
+	
+	public static Optional<String> validateSubnetMask(short[] parts) {
+	    if (parts.length != 4) {
+	    		String mes = "";
+	    		for(int i = 0; i < parts.length-1; i++) {
+	    			mes += parts[i] + ".";
+	    		}
+	    		mes += parts[parts.length-1];
+	    		return Optional.of("parsing: " + mes);
+	    }
+	    int mask = 0;
+	    for (short part : parts) {
+	        if (part < 0 || part > 255) return Optional.of("every part must be >=0 and <=255: "+parts[0]+"."+parts[1]+"."+parts[2]+"."+parts[3]);
+	        mask = (mask << 8) | part;
+	    }
+
+	    boolean zeroFound = false;
+	    for (int i = 31; i >= 0; i--) {
+	        boolean bit = (mask & (1 << i)) != 0;
+	        if (bit) {
+	            if (zeroFound) return Optional.of("found a bit set to 1 after one set to 0: "+parts[0]+"."+parts[1]+"."+parts[2]+"."+parts[3]);
+	        } else {
+	            zeroFound = true;
+	        }
+	    }
+	    return Optional.empty();
 	}
 }

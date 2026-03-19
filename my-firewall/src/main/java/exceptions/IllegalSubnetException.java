@@ -4,7 +4,7 @@ package exceptions;
 public class IllegalSubnetException extends Exception {
 	
 	public IllegalSubnetException(String msg) {
-		super(msg);
+		super("Illegal subnet "+msg);
 	}
 	
 }

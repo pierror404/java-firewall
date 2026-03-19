@@ -1,6 +1,7 @@
 package elements;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import exceptions.IllegalSubnetException;
 import utils.SubnetMaskUtils;
@@ -75,26 +76,24 @@ public class SubnetMask {
 
 	public static SubnetMask fromSlashNotation(short slashNotation) throws IllegalSubnetException {
 		if(slashNotation < 0 || slashNotation > 32)
-			throw new IllegalSubnetException("illegal slash notation subnet: /"+slashNotation+". Must be from 0 to 32");
+			throw new IllegalSubnetException("slash notation must be from 0 to 32: /"+slashNotation);
 		return new SubnetMask(slashNotation);
 	}
 	
 	public static SubnetMask fromShorts(short first, short second, short third, short fourth) throws IllegalSubnetException {
-		if(first < 0 || first > 255 || 
-				second < 0 || second > 255 ||
-				third < 0 || third > 255 ||
-				fourth < 0 || third > 255)
-			throw new IllegalSubnetException("illegal subnet: "+first+"."+second+"."+third+"."+fourth);
+		Optional<String> res = SubnetMaskUtils.validateSubnetMask(new short[] {first,second,third,fourth});
+		if(res.isPresent())
+			throw new IllegalSubnetException(res.get());
 		return new SubnetMask(first, second, third, fourth);
 	}
 	
-	public static SubnetMask fromString(String subnet, boolean slashNotation) throws NumberFormatException, IllegalSubnetException {
-		if(slashNotation) 
-			return SubnetMask.fromSlashNotation(Short.parseShort(subnet));
+	public static SubnetMask fromString(String subnet) throws NumberFormatException, IllegalSubnetException {
+		if(subnet.charAt(0) == '/') 
+			return SubnetMask.fromSlashNotation(Short.parseShort(subnet.replace("/", "")));
 		
-		String[] numbers = subnet.split(".");
+		String[] numbers = subnet.split("\\.");
 		if(numbers.length != 4)
-			throw new IllegalSubnetException("illegal subnet parsing: " + subnet);
+			throw new IllegalSubnetException("parsing: " + subnet);
 		short first, second, third, fourth;
 		first = Short.parseShort(numbers[0]);
 		second = Short.parseShort(numbers[1]);
@@ -103,5 +102,7 @@ public class SubnetMask {
 		return SubnetMask.fromShorts(first, second, third, fourth);
 			
 	}
+	
+
 
 }
