@@ -126,4 +126,14 @@ public class SubnetMaskTest {
 	void testFromStringInvalidFound1After0() {
 		assertThrowsExactly(IllegalSubnetException.class, () -> SubnetMask.fromString("255.0.255.0"));
 	}
+	
+	@Test
+	void testEquals() throws NumberFormatException, IllegalSubnetException {
+		assertEquals(SubnetMask.fromString("255.255.255.0"), SubnetMask.fromString("/24"));
+		assertEquals(SubnetMask.fromString("255.255.255.0"), SubnetMask.fromShorts((short)255, (short)255, (short)255, (short)0));
+		assertEquals(SubnetMask.fromString("/24"), SubnetMask.fromShorts((short)255, (short)255, (short)255, (short)0));
+		assertEquals(SubnetMask.fromSlashNotation((short)24), SubnetMask.fromString("/24"));
+		assertEquals(SubnetMask.fromString("255.255.255.0"), SubnetMask.fromSlashNotation((short)24));
+		assertEquals(SubnetMask.fromSlashNotation((short)24), SubnetMask.fromShorts((short)255, (short)255, (short)255, (short)0));
+	}
 }
