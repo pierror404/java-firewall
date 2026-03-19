@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import exceptions.IllegalIPv4Exception;
 import exceptions.IllegalSubnetException;
+import utils.IPv4Utils;
 
 public class Network {
 	
@@ -22,6 +23,20 @@ public class Network {
 
 	public SubnetMask getSubnet() {
 		return subnet;
+	}
+	
+	public boolean contains(IPv4 ip) {
+		int mask = 0xffffffff << (32 - this.subnet.getSlashNotation());
+		
+		int net = IPv4Utils.ipToInt(this.ip);
+		int address = IPv4Utils.ipToInt(ip);
+		
+		return (net & mask) == (address & mask);
+	}
+	
+	@Override
+	public String toString() {
+		return ip.toString() + "/" + subnet.getSlashNotation();
 	}
 
 	@Override

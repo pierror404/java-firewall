@@ -35,6 +35,10 @@ public class IPv4 {
 	public short getFourth() {
 		return fourth;
 	}
+	
+	public short[] getIpAsArray() {
+		return new short[] {first, second, third, fourth};
+	}
 
 	@Override
 	public int hashCode() {
