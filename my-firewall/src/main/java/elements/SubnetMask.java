@@ -3,6 +3,7 @@ package elements;
 import java.util.Objects;
 
 import exceptions.IllegalSubnetException;
+import utils.SubnetMaskUtils;
 
 public class SubnetMask {
 	private short first;
@@ -18,12 +19,17 @@ public class SubnetMask {
 		this.second = second;
 		this.third = third;
 		this.fourth = fourth;
+		this.slashNotation = SubnetMaskUtils.fromSubnetToSlash(this.toString());
 	}
 
 	private SubnetMask(short slashnotation) {
 		super();
 		this.slashNotation = slashnotation;
-		
+		short[] mask = SubnetMaskUtils.fromSlashToSubnet(slashnotation);
+		this.first = mask[0];
+		this.second = mask[1];
+		this.third = mask[2];
+		this.fourth = mask[3];
 	}
 
 	public short getFirst() {
@@ -44,6 +50,11 @@ public class SubnetMask {
 
 	public short getSlashNotation() {
 		return slashNotation;
+	}
+	
+	@Override
+	public String toString() {
+		return this.first + "." + this.second + "." + this.third + "." + this.fourth;
 	}
 	
 	@Override
