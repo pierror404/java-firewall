@@ -3,7 +3,7 @@ package firewall;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.pcap4j.core.*;
+//import org.pcap4j.core.*;
 import rules.IRule;
 
 public class FirewallEngine {
@@ -26,11 +26,7 @@ public class FirewallEngine {
 	}
 	
 	public void allowConnection(String ip, String port, String protocol) {
-		for(IRule r : rules) {
-			
-			boolean ipMatch = r.getIp().equals("*") || r.getIp().equals(ip);
-			
-		}
+		
 	}
 	
 }
