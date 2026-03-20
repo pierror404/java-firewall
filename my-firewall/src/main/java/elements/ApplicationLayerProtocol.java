@@ -16,7 +16,7 @@ public enum ApplicationLayerProtocol implements IProtocol{
 	DHCP("DHCP");
 
 	private String name;
-	private static final int level = 6;
+	private static final Layer LEVEL = Layer.APPLICATION;
 	
 	ApplicationLayerProtocol(String name){
 		this.name = name;
@@ -28,13 +28,13 @@ public enum ApplicationLayerProtocol implements IProtocol{
 	}
 
 	@Override
-	public int getLevel() {
-		return level;
+	public Layer getLevel() {
+		return LEVEL;
 	}
 	
 	@Override
 	public String toString() {
-		return name + "(" + level + ")";
+		return name + "(" + LEVEL.getLayer() + ")";
 	}
 	
 }

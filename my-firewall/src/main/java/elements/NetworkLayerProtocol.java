@@ -12,7 +12,7 @@ public enum NetworkLayerProtocol implements IProtocol{
 	IGMP("IGMP");
 
 	private String name;
-	private static final int LEVEL = 3;
+	private static final Layer LEVEL = Layer.NETWORK;
 	
 	NetworkLayerProtocol(String name){
 		this.name = name;
@@ -24,12 +24,12 @@ public enum NetworkLayerProtocol implements IProtocol{
 	}
 
 	@Override
-	public int getLevel() {
+	public Layer getLevel() {
 		return LEVEL;
 	}
 	
 	@Override
 	public String toString() {
-		return name + "(" + LEVEL + ")";
+		return name + "(" + LEVEL.getLayer() + ")";
 	}
 }

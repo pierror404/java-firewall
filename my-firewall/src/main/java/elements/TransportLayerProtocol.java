@@ -7,7 +7,7 @@ public enum TransportLayerProtocol implements IProtocol{
 	SCTP	("SCTP");
 	
 	private String name;
-	private static final int LEVEL = 4;
+	private static final Layer LEVEL = Layer.TRANSPORT;
 	
 	TransportLayerProtocol(String name){
 		this.name = name;
@@ -19,13 +19,13 @@ public enum TransportLayerProtocol implements IProtocol{
 	}
 
 	@Override
-	public int getLevel() {
+	public Layer getLevel() {
 		return LEVEL;
 	}
 	
 	@Override
 	public String toString() {
-		return name + "(" + LEVEL + ")";
+		return name + "(" + LEVEL.getLayer() + ")";
 	}
 
 }
