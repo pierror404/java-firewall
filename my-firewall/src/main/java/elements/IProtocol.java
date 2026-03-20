@@ -1,6 +1,6 @@
 package elements;
 
-interface IProtocol {
+public interface IProtocol {
 	
 	public String getName();
 	public Layer getLevel();

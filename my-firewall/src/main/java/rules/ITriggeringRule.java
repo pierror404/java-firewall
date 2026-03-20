@@ -1,5 +1,6 @@
 package rules;
 
-public interface ITriggeringRule extends IRule{
-	public void onTrigger();
+@FunctionalInterface
+public interface ITriggeringRule {
+	public void apply();
 }
