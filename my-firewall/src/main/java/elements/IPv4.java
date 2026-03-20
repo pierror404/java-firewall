@@ -66,7 +66,7 @@ public class IPv4 {
 		IPv4 result;
 		numbers = ip.split("\\.");
 		if(numbers.length != 4)
-			throw new IllegalIPv4Exception("illegal IPv4 parsing: " + ip);
+			throw new IllegalIPv4Exception("parsing: " + ip);
 		first = Short.parseShort(numbers[0]);
 		second = Short.parseShort(numbers[1]);
 		third = Short.parseShort(numbers[2]);
@@ -74,8 +74,8 @@ public class IPv4 {
 		if(first < 0 || first > 255 || 
 				second < 0 || second > 255 ||
 				third < 0 || third > 255 ||
-				fourth < 0 || third > 255)
-			throw new IllegalIPv4Exception("illegal IPv4: "+first+"."+second+"."+third+"."+fourth);
+				fourth < 0 || fourth > 255)
+			throw new IllegalIPv4Exception("every number must be in a range from 0 to 255: "+first+"."+second+"."+third+"."+fourth);
 		result = new IPv4(first, second, third, fourth);
 		return result;
 	}
@@ -85,7 +85,7 @@ public class IPv4 {
 				second < 0 || second > 255 ||
 				third < 0 || third > 255 ||
 				fourth < 0 || third > 255)
-			throw new IllegalIPv4Exception("illegal IPv4: "+first+"."+second+"."+third+"."+fourth);
+			throw new IllegalIPv4Exception("every number must be in a range from 0 to 255: "+first+"."+second+"."+third+"."+fourth);
 		IPv4 result = new IPv4(first, second, third, fourth);
 		return result;
 	}
