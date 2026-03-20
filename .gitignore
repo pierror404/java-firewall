@@ -1,0 +1,71 @@
+# =========================
+# Maven
+# =========================
+my-firewall/target/
+my-firewall/pom.xml.tag
+my-firewall/pom.xml.releaseBackup
+my-firewall/pom.xml.versionsBackup
+my-firewall/pom.xml.next
+my-firewall/release.properties
+my-firewall/dependency-reduced-pom.xml
+my-firewall/buildNumber.properties
+
+# =========================
+# Compiled files
+# =========================
+my-firewall/*.class
+my-firewall/*.jar
+my-firewall/*.war
+my-firewall/*.ear
+
+# =========================
+# Logs
+# =========================
+my-firewall/*.log
+
+# =========================
+# OS files
+# =========================
+my-firewall/.DS_Store
+my-firewall/Thumbs.db
+
+# =========================
+# IDE - IntelliJ IDEA
+# =========================
+my-firewall/.idea/
+my-firewall/*.iml
+
+# =========================
+# IDE - Eclipse
+# =========================
+my-firewall/.project
+my-firewall/.classpath
+my-firewall/.settings/
+
+# =========================
+# IDE - VS Code
+# =========================
+my-firewall/.vscode/
+
+# =========================
+# Test reports
+# =========================
+my-firewall/surefire-reports/
+my-firewall/failsafe-reports/
+
+# =========================
+# Temporary files
+# =========================
+my-firewall/*.tmp
+my-firewall/*.swp
+
+# =========================
+# Coverage tools
+# =========================
+my-firewall/jacoco.exec
+my-firewall/site/
+
+# =========================
+# Environment / secrets
+# =========================
+my-firewall/.env
