@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="test.elements.SubnetMaskTest" time="0.03" tests="19" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="test.elements.SubnetMaskTest" time="0.043" tests="19" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IT"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-17\bin"/>
-    <property name="sun.java.command" value="C:\Users\pierl\AppData\Local\Temp\surefire2836219277988117423\surefirebooter-20260320121126245_3.jar C:\Users\pierl\AppData\Local\Temp\surefire2836219277988117423 2026-03-20T12-11-26_132-jvmRun1 surefire-20260320121126245_1tmp surefire_0-20260320121126245_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\pierl\AppData\Local\Temp\surefire4254805829700965572\surefirebooter-20260320121726068_3.jar C:\Users\pierl\AppData\Local\Temp\surefire4254805829700965572 2026-03-20T12-17-25_968-jvmRun1 surefire-20260320121726068_1tmp surefire_0-20260320121726068_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\pierl\dev\Java\firewall\my-firewall\target\test-classes;C:\Users\pierl\dev\Java\firewall\my-firewall\target\classes;C:\Users\pierl\.m2\repository\org\pcap4j\pcap4j-core\1.8.2\pcap4j-core-1.8.2.jar;C:\Users\pierl\.m2\repository\net\java\dev\jna\jna\5.3.1\jna-5.3.1.jar;C:\Users\pierl\.m2\repository\org\slf4j\slf4j-api\1.7.26\slf4j-api-1.7.26.jar;C:\Users\pierl\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.2\junit-jupiter-5.10.2.jar;C:\Users\pierl\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.2\junit-jupiter-api-5.10.2.jar;C:\Users\pierl\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\pierl\.m2\repository\org\junit\platform\junit-platform-commons\1.10.2\junit-platform-commons-1.10.2.jar;C:\Users\pierl\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\pierl\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.2\junit-jupiter-params-5.10.2.jar;C:\Users\pierl\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.2\junit-jupiter-engine-5.10.2.jar;C:\Users\pierl\.m2\repository\org\junit\platform\junit-platform-engine\1.10.2\junit-platform-engine-1.10.2.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -31,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\pierl\AppData\Local\Temp\surefire2836219277988117423\surefirebooter-20260320121126245_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\pierl\AppData\Local\Temp\surefire4254805829700965572\surefirebooter-20260320121726068_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.12+8-LTS-286"/>
@@ -57,23 +57,23 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testFromShorts24" classname="test.elements.SubnetMaskTest" time="0.001"/>
-  <testcase name="testFromShorts30" classname="test.elements.SubnetMaskTest" time="0.002"/>
-  <testcase name="testFromSlashNotation8" classname="test.elements.SubnetMaskTest" time="0.0"/>
+  <testcase name="testFromShorts24" classname="test.elements.SubnetMaskTest" time="0.002"/>
+  <testcase name="testFromShorts30" classname="test.elements.SubnetMaskTest" time="0.003"/>
+  <testcase name="testFromSlashNotation8" classname="test.elements.SubnetMaskTest" time="0.002"/>
   <testcase name="testFromShortsInvalidGreater255" classname="test.elements.SubnetMaskTest" time="0.003"/>
-  <testcase name="testFromStringSlash24" classname="test.elements.SubnetMaskTest" time="0.001"/>
-  <testcase name="testFromStringSlash30" classname="test.elements.SubnetMaskTest" time="0.002"/>
-  <testcase name="testFromSlashNotationInvalid" classname="test.elements.SubnetMaskTest" time="0.002"/>
-  <testcase name="testFromStringInvalidGreater255" classname="test.elements.SubnetMaskTest" time="0.001"/>
+  <testcase name="testFromStringSlash24" classname="test.elements.SubnetMaskTest" time="0.002"/>
+  <testcase name="testFromStringSlash30" classname="test.elements.SubnetMaskTest" time="0.001"/>
+  <testcase name="testFromSlashNotationInvalid" classname="test.elements.SubnetMaskTest" time="0.001"/>
+  <testcase name="testFromStringInvalidGreater255" classname="test.elements.SubnetMaskTest" time="0.002"/>
   <testcase name="testFromString24" classname="test.elements.SubnetMaskTest" time="0.001"/>
   <testcase name="testFromString30" classname="test.elements.SubnetMaskTest" time="0.0"/>
   <testcase name="testFromStringInvalidFound1After0" classname="test.elements.SubnetMaskTest" time="0.001"/>
-  <testcase name="testFromStringSlash8" classname="test.elements.SubnetMaskTest" time="0.0"/>
-  <testcase name="testFromStringInvalidSlash33" classname="test.elements.SubnetMaskTest" time="0.0"/>
-  <testcase name="testEquals" classname="test.elements.SubnetMaskTest" time="0.001"/>
-  <testcase name="testFromShorts8" classname="test.elements.SubnetMaskTest" time="0.001"/>
+  <testcase name="testFromStringSlash8" classname="test.elements.SubnetMaskTest" time="0.001"/>
+  <testcase name="testFromStringInvalidSlash33" classname="test.elements.SubnetMaskTest" time="0.001"/>
+  <testcase name="testEquals" classname="test.elements.SubnetMaskTest" time="0.0"/>
+  <testcase name="testFromShorts8" classname="test.elements.SubnetMaskTest" time="0.002"/>
   <testcase name="testFromShortsInvalidFound1After0" classname="test.elements.SubnetMaskTest" time="0.001"/>
-  <testcase name="testFromString8" classname="test.elements.SubnetMaskTest" time="0.0"/>
+  <testcase name="testFromString8" classname="test.elements.SubnetMaskTest" time="0.001"/>
   <testcase name="testFromSlashNotation24" classname="test.elements.SubnetMaskTest" time="0.001"/>
   <testcase name="testFromSlashNotation30" classname="test.elements.SubnetMaskTest" time="0.0"/>
 </testsuite>
