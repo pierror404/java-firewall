@@ -4,7 +4,7 @@ import rules.ITriggeringRule;
 
 public class RuleUtils {
 	public static ITriggeringRule getLogFunction(String filename) {
-		ITriggeringRule logfunction = () -> {
+		ITriggeringRule logfunction = (packet) -> {
 			// TODO: implement logging function
 			System.out.println(filename);
 		};
@@ -12,14 +12,14 @@ public class RuleUtils {
 	}
 	
 	public static ITriggeringRule getDefaultDenyFunction() {
-		ITriggeringRule function = () -> {
+		ITriggeringRule function = (packet) -> {
 			// TODO: drop the packet
 		};
 		return function;
 	}
 	
 	public static ITriggeringRule getDefaultAllowFunction() {
-		ITriggeringRule function = () -> {
+		ITriggeringRule function = (packet) -> {
 			// TODO: let the packet pass
 		};
 		return function;

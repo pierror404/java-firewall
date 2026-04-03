@@ -8,16 +8,16 @@ import utils.IPv4Utils;
 
 public class Network {
 	
-	private IPv4 ip;
+	private IP ip;
 	private SubnetMask subnet;
 	
-	private Network(IPv4 ip, SubnetMask subnet) {
+	private Network(IP ip, SubnetMask subnet) {
 		super();
 		this.ip = ip;
 		this.subnet = subnet;
 	}
 	
-	public IPv4 getIp() {
+	public IP getIp() {
 		return ip;
 	}
 
@@ -25,13 +25,19 @@ public class Network {
 		return subnet;
 	}
 	
-	public boolean contains(IPv4 ip) {
-		int mask = 0xffffffff << (32 - this.subnet.getSlashNotation());
+	public boolean contains(IP ip) {
+		if(ip instanceof IPv4 && this.ip instanceof IPv4) {
+			int mask = 0xffffffff << (32 - this.subnet.getSlashNotation());
+			
+			int net = IPv4Utils.ipToInt((IPv4) this.ip);
+			int address = IPv4Utils.ipToInt((IPv4) ip);
+			
+			return (net & mask) == (address & mask);
+		}
 		
-		int net = IPv4Utils.ipToInt(this.ip);
-		int address = IPv4Utils.ipToInt(ip);
+		/* TODO: implement method contains for IPv6 */
+		return false;
 		
-		return (net & mask) == (address & mask);
 	}
 	
 	@Override
@@ -66,7 +72,7 @@ public class Network {
 		return new Network(IPv4.fromShorts(ipFirst, ipSecond, ipThird, ipFourth), SubnetMask.fromShorts(subnetFirst, subnetSecond, subnetThird, subnetFourth));
 	}
 	
-	public static Network fromIPandShortsSubnet(IPv4 ip, short first, short second, short third, short fourth) throws IllegalSubnetException {
+	public static Network fromIPandShortsSubnet(IP ip, short first, short second, short third, short fourth) throws IllegalSubnetException {
 		return new Network(ip, SubnetMask.fromShorts(first, second, third, fourth));
 	}
 	
