@@ -5,7 +5,7 @@ import java.util.Objects;
 import exceptions.IllegalIPv4Exception;
 import exceptions.IllegalSubnetException;
 
-public class IPv4 {
+public class IPv4 implements IP{
 	
 	private short first;
 	private short second;
@@ -88,5 +88,10 @@ public class IPv4 {
 			throw new IllegalIPv4Exception("every number must be in a range from 0 to 255: "+first+"."+second+"."+third+"."+fourth);
 		IPv4 result = new IPv4(first, second, third, fourth);
 		return result;
+	}
+
+	@Override
+	public IP getIp() {
+		return this;
 	}
 }
