@@ -3,7 +3,10 @@ package firewall;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-//import org.pcap4j.core.*;
+
+import elements.IProtocol;
+import elements.IPv4;
+import elements.NetPort;
 import rules.IRule;
 
 public class FirewallEngine {
@@ -25,7 +28,7 @@ public class FirewallEngine {
 		this.rules.add(rule);
 	}
 	
-	public void allowConnection(String ip, String port, String protocol) {
+	public void allowConnection(IPv4 ip, NetPort port, IProtocol protocol) {
 		
 	}
 	
