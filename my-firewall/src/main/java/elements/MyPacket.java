@@ -12,4 +12,10 @@ public record MyPacket(Optional<IP> sourceAddress,
 		Optional<Header> header,
 		Optional<Packet> payload) {
 
+	@Override
+	public String toString() {
+		return "Packet: [Source Addr=" + sourceAddress + ", Source Port=" + sourcePort + ", Dest Addr="
+				+ destinationAddress + ", Dest Port=" + destinationPort + ", Protocol=" + protocol + "]";
+	}
+	
 }

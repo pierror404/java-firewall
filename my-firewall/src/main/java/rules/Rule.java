@@ -2,6 +2,7 @@ package rules;
 
 import elements.Layer;
 import utils.RuleUtils;
+import elements.Direction;
 import elements.IProtocol;
 
 public class Rule implements IRule {
@@ -11,14 +12,16 @@ public class Rule implements IRule {
 	private Endpoint source;
 	private Endpoint destination;
 	private ITriggeringRule function;
+	private Direction direction;
 	
-	private Rule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, ITriggeringRule function) {
+	private Rule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, ITriggeringRule function, Direction direction) {
 		super();
 		this.layer = layer;
 		this.protocol = protocol;
 		this.source = source;
 		this.destination = destination;
 		this.function = function;
+		this.direction = direction;
 	}
 	
 	public ITriggeringRule getFunction() {
@@ -35,6 +38,10 @@ public class Rule implements IRule {
 	
 	public IProtocol getProtocol() {
 		return protocol;
+	}
+	
+	public Direction getDirection() {
+		return direction;
 	}
 
 	@Override
@@ -55,20 +62,20 @@ public class Rule implements IRule {
 	 * 	- TRIGGER can either just drop the packet, or execute a custom function and then drop the packet
 	 */
 	
-	public static Rule createLoggingRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, String filename) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getLogFunction(filename));
+	public static Rule createLoggingRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, String filename, Direction direction) {
+		return new Rule(layer, protocol, source, destination, RuleUtils.getLogFunction(filename), direction);
 	}
 	
-	public static Rule createTriggerRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, ITriggeringRule function) {
-		return new Rule(layer, protocol, source, destination, function);
+	public static Rule createTriggerRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, ITriggeringRule function, Direction direction) {
+		return new Rule(layer, protocol, source, destination, function, direction);
 	}
 	
-	public static Rule createDefaultDenyRule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getDefaultDenyFunction());
+	public static Rule createDefaultDenyRule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, Direction direction) {
+		return new Rule(layer, protocol, source, destination, RuleUtils.getDefaultDenyFunction(), direction);
 	}
 	
-	public static Rule createDefaultAllowRule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getDefaultAllowFunction());
+	public static Rule createDefaultAllowRule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, Direction direction) {
+		return new Rule(layer, protocol, source, destination, RuleUtils.getDefaultAllowFunction(), direction);
 	}
 
 }

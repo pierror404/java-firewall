@@ -27,22 +27,25 @@ public class FirewallEngine {
 		this.rules.add(rule);
 	}
 	
-	public boolean allowConnection(MyPacket packet) {
+	public void check(MyPacket packet) {
 		
 		rules.stream().forEach(rule -> {
-			boolean isNetworkRule = rule.getDestination().ip().isEmpty() && rule.getDestination().network().isPresent();
 			
+			// Destination
+			boolean isNetworkDestinationRule = rule.getDestination().ip().isEmpty() && rule.getDestination().network().isPresent();
 			IP packetDest = packet.destinationAddress().get();
 			
-			/* TODO: add method that returns true if a rule is applicable to a packet at the Rule class */
+			// Source
+			boolean isNetworkSourceRule = rule.getSource().ip().isEmpty() && rule.getSource().network().isPresent();
+			IP packetSource = packet.sourceAddress().get();
 			
-			if((isNetworkRule && rule.getDestination().network().get().contains(packetDest)) ||
-					(!isNetworkRule && rule.getDestination().ip().get().equals(packetDest)))
-				rule.getFunction().apply(packet);				
+			if((((isNetworkDestinationRule && rule.getDestination().network().get().contains(packetDest)) ||
+					(!isNetworkDestinationRule && rule.getDestination().ip().get().equals(packetDest))) ||
+					((isNetworkSourceRule && rule.getDestination().network().get().contains(packetSource)) ||
+					(!isNetworkSourceRule && rule.getDestination().ip().get().equals(packetSource)))) && 
+					packet.protocol().get() == rule.getProtocol())
+				rule.getFunction().apply(packet);
 		});
-		
-		
-		return true;
 	}
 	
 }
