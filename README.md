@@ -1,4 +1,4 @@
-A simple Firewall built in Java and C as a compiling infrastructure for my language EasyWall.\
+A simple Windows compatible Firewall built in Java and C as a compiling infrastructure for my language EasyWall.\
 The project strucure:
 ```
 .
@@ -59,4 +59,5 @@ The project strucure:
                         └── SubnetMaskTest.java
 ```
 I will provide every information to compile and run the project later when I will do it myself. \
-I've just tested the classes that are shown in the `test` directory in the project tree, but logically everything should work. Imma test it later.
+I've just tested the classes that are shown in the `test` directory in the project tree, but logically everything should work. Imma test it later.\
+I will also, some day in the future, add the support to linux and macOS systems, but nowadays this can only run on Windows systems.
