@@ -25,7 +25,7 @@ public class FirewallEngine {
     		 * Must implement:
     		 * 		- check every rule multi-threaded
     		 * 		- result collection
-    		 * 		- return the and of the results
+    		 * 		- return the or of the results
     		 * 
     		 * */
         List<CompletableFuture<Boolean>> futures = rules.stream()
