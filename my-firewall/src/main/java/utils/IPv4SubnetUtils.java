@@ -2,7 +2,9 @@ package utils;
 
 import java.util.Optional;
 
-public class SubnetMaskUtils {
+import elements.IPv4Subnet;
+
+public class IPv4SubnetUtils {
 	public static short[] fromSlashToSubnet(short slashNotation) {
         int mask = 0xffffffff << (32 - slashNotation);
 
@@ -68,4 +70,11 @@ public class SubnetMaskUtils {
 	    }
 	    return Optional.empty();
 	}
+	
+    public static int toInt(IPv4Subnet mask) {
+        return ((mask.getFirst() & 0xFF) << 24) |
+               ((mask.getSecond() & 0xFF) << 16) |
+               ((mask.getThird() & 0xFF) << 8) |
+               (mask.getFourth() & 0xFF);
+    }
 }

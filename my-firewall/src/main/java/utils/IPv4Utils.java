@@ -13,5 +13,9 @@ public class IPv4Utils {
 	    return result;
 	}
 	
+    public static boolean inNetwork(int ip, int network, int mask) {
+        return (ip & mask) == (network & mask);
+    }
+	
 	
 }

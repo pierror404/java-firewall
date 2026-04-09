@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import elements.IPv4;
 import elements.Network;
-import elements.SubnetMask;
+import elements.IPv4Subnet;
 import exceptions.IllegalIPv4Exception;
 import exceptions.IllegalSubnetException;
 
@@ -15,7 +15,7 @@ public class NetworkTest {
     @Test
     void testFromIPandSubnet() throws Exception {
         IPv4 ip = IPv4.fromString("192.168.1.0");
-        SubnetMask subnet = SubnetMask.fromString("/24");
+        IPv4Subnet subnet = IPv4Subnet.fromString("/24");
 
         Network net = Network.fromIPandSubnet(ip, subnet);
 
@@ -25,7 +25,7 @@ public class NetworkTest {
 
     @Test
     void testFromShortsIPandSubnet() throws Exception {
-        SubnetMask subnet = SubnetMask.fromString("/24");
+        IPv4Subnet subnet = IPv4Subnet.fromString("/24");
 
         Network net = Network.fromShortsIPandSubnet(
                 (short)192, (short)168, (short)1, (short)0,
@@ -127,7 +127,7 @@ public class NetworkTest {
         assertThrows(IllegalIPv4Exception.class, () -> {
             Network.fromShortsIPandSubnet(
                     (short)300, (short)0, (short)0, (short)1,
-                    SubnetMask.fromString("/24")
+                    IPv4Subnet.fromString("/24")
             );
         });
     }

@@ -12,6 +12,10 @@ public class NetPort {
 		this.port = port;
 	}
 	
+	public int getPort() {
+		return port;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(port);

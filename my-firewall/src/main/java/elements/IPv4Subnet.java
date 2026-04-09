@@ -4,9 +4,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 import exceptions.IllegalSubnetException;
-import utils.SubnetMaskUtils;
+import utils.IPv4SubnetUtils;
+import utils.IPv4Utils;
 
-public class SubnetMask {
+public class IPv4Subnet implements Subnet {
 	private short first;
 	private short second;
 	private short third;
@@ -14,19 +15,19 @@ public class SubnetMask {
 	
 	private short slashNotation;
 	
-	private SubnetMask(short first, short second, short third, short fourth) {
+	private IPv4Subnet(short first, short second, short third, short fourth) {
 		super();
 		this.first = first;
 		this.second = second;
 		this.third = third;
 		this.fourth = fourth;
-		this.slashNotation = SubnetMaskUtils.fromSubnetToSlash(this.toString());
+		this.slashNotation = IPv4SubnetUtils.fromSubnetToSlash(this.toString());
 	}
 
-	private SubnetMask(short slashnotation) {
+	private IPv4Subnet(short slashnotation) {
 		super();
 		this.slashNotation = slashnotation;
-		short[] mask = SubnetMaskUtils.fromSlashToSubnet(slashnotation);
+		short[] mask = IPv4SubnetUtils.fromSlashToSubnet(slashnotation);
 		this.first = mask[0];
 		this.second = mask[1];
 		this.third = mask[2];
@@ -67,29 +68,29 @@ public class SubnetMask {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!(obj instanceof SubnetMask))
+		if (!(obj instanceof IPv4Subnet))
 			return false;
-		SubnetMask other = (SubnetMask) obj;
+		IPv4Subnet other = (IPv4Subnet) obj;
 		return first == other.first && fourth == other.fourth && second == other.second
 				&& slashNotation == other.slashNotation && third == other.third;
 	}
 
-	public static SubnetMask fromSlashNotation(short slashNotation) throws IllegalSubnetException {
+	public static IPv4Subnet fromSlashNotation(short slashNotation) throws IllegalSubnetException {
 		if(slashNotation < 0 || slashNotation > 32)
 			throw new IllegalSubnetException("slash notation must be from 0 to 32: /"+slashNotation);
-		return new SubnetMask(slashNotation);
+		return new IPv4Subnet(slashNotation);
 	}
 	
-	public static SubnetMask fromShorts(short first, short second, short third, short fourth) throws IllegalSubnetException {
-		Optional<String> res = SubnetMaskUtils.validateSubnetMask(new short[] {first,second,third,fourth});
+	public static IPv4Subnet fromShorts(short first, short second, short third, short fourth) throws IllegalSubnetException {
+		Optional<String> res = IPv4SubnetUtils.validateSubnetMask(new short[] {first,second,third,fourth});
 		if(res.isPresent())
 			throw new IllegalSubnetException(res.get());
-		return new SubnetMask(first, second, third, fourth);
+		return new IPv4Subnet(first, second, third, fourth);
 	}
 	
-	public static SubnetMask fromString(String subnet) throws NumberFormatException, IllegalSubnetException {
+	public static IPv4Subnet fromString(String subnet) throws NumberFormatException, IllegalSubnetException {
 		if(subnet.charAt(0) == '/') 
-			return SubnetMask.fromSlashNotation(Short.parseShort(subnet.replace("/", "")));
+			return IPv4Subnet.fromSlashNotation(Short.parseShort(subnet.replace("/", "")));
 		
 		String[] numbers = subnet.split("\\.");
 		if(numbers.length != 4)
@@ -99,8 +100,18 @@ public class SubnetMask {
 		second = Short.parseShort(numbers[1]);
 		third = Short.parseShort(numbers[2]);
 		fourth = Short.parseShort(numbers[3]);	
-		return SubnetMask.fromShorts(first, second, third, fourth);
+		return IPv4Subnet.fromShorts(first, second, third, fourth);
 			
+	}
+
+	@Override
+	public boolean matches(IP ip, IP network) {
+	    if (!(ip instanceof IPv4 v4) || !(network instanceof IPv4 n4)) return false;
+
+	    int mask = IPv4SubnetUtils.toInt(this);
+
+	    return (IPv4Utils.ipToInt(v4) & mask)
+	        == (IPv4Utils.ipToInt(n4) & mask);
 	}
 	
 

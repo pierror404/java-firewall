@@ -17,7 +17,6 @@ public class RuleUtils {
 			} catch (IOException e) {
 	            System.err.println("Errore nel logging del pacchetto: " + e.getMessage());
 	        }
-			System.out.println(filename);
 		};
 		return logfunction;
 	}

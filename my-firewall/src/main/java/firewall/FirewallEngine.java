@@ -1,51 +1,42 @@
 package firewall;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import elements.IP;
 import elements.MyPacket;
 import rules.Rule;
 
 public class FirewallEngine {
 	
-	List<Rule> rules;
+
+    private final List<Rule> rules;
+
+    public FirewallEngine(List<Rule> rules) {
+        this.rules = new CopyOnWriteArrayList<>();
+    }
+
+    public void addRule(Rule rule) {
+        rules.add(rule);
+    }
 	
-	public FirewallEngine() {
-		this.rules = new ArrayList<Rule>();
-	}
-	public FirewallEngine(ArrayList<Rule> rules) {
-		this.rules = rules;
-	}
-	public FirewallEngine(Rule[] rules) {
-		this.rules = Arrays.asList(rules);
-	}
-	
-	
-	public void addRule(Rule rule) {
-		this.rules.add(rule);
-	}
-	
-	public void check(MyPacket packet) {
-		
-		rules.stream().forEach(rule -> {
-			
-			// Destination
-			boolean isNetworkDestinationRule = rule.getDestination().ip().isEmpty() && rule.getDestination().network().isPresent();
-			IP packetDest = packet.destinationAddress().get();
-			
-			// Source
-			boolean isNetworkSourceRule = rule.getSource().ip().isEmpty() && rule.getSource().network().isPresent();
-			IP packetSource = packet.sourceAddress().get();
-			
-			if((((isNetworkDestinationRule && rule.getDestination().network().get().contains(packetDest)) ||
-					(!isNetworkDestinationRule && rule.getDestination().ip().get().equals(packetDest))) ||
-					((isNetworkSourceRule && rule.getDestination().network().get().contains(packetSource)) ||
-					(!isNetworkSourceRule && rule.getDestination().ip().get().equals(packetSource)))) && 
-					packet.protocol().get() == rule.getProtocol())
-				rule.getFunction().apply(packet);
-		});
-	}
+    public boolean evaluate(MyPacket packet) {
+    		/*
+    		 * Must implement:
+    		 * 		- check every rule multi-threaded
+    		 * 		- result collection
+    		 * 		- return the and of the results
+    		 * 
+    		 * */
+        List<CompletableFuture<Boolean>> futures = rules.stream()
+                .map(rule -> CompletableFuture.supplyAsync(() -> {/*TODO: evaluate rule*/return false;}))
+                .toList();
+
+            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+            return futures.stream()
+                .map(CompletableFuture::join)
+                .anyMatch(Boolean::booleanValue);
+    }
 	
 }
