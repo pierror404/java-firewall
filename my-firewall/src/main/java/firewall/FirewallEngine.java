@@ -29,8 +29,7 @@ public class FirewallEngine {
     		 * 
     		 * */
         List<CompletableFuture<Boolean>> futures = rules.stream()
-                .map(rule -> CompletableFuture.supplyAsync(() -> {/*TODO: evaluate rule*/return false;}))
-                .toList();
+                .map(rule -> CompletableFuture.supplyAsync(() -> rule.evaluate(packet))).toList();
 
             CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 

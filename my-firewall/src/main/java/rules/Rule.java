@@ -4,6 +4,7 @@ import elements.Layer;
 import utils.RuleUtils;
 import elements.Direction;
 import elements.IProtocol;
+import elements.MyPacket;
 
 public class Rule implements IRule {
 	
@@ -47,6 +48,22 @@ public class Rule implements IRule {
 	@Override
 	public Layer getLayer() {
 		return layer;
+	}
+	
+	/*
+	 * evaluate returns true if a packet must be dropped and false if not
+	 * */
+	
+	public boolean evaluate(MyPacket packet) {
+		/* Matches destination */
+		
+		/* Matches source */
+		
+		/* Matches protocol */
+		
+		/* Trigger function */
+		
+		return false;
 	}
 	
 	/* 
