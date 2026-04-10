@@ -55,6 +55,7 @@ public class Rule implements IRule {
 	 * */
 	
 	public boolean evaluate(MyPacket packet) {
+		boolean matches = false;
 		/* Matches destination */
 		
 		/* Matches source */
@@ -62,8 +63,10 @@ public class Rule implements IRule {
 		/* Matches protocol */
 		
 		/* Trigger function */
+		if(matches)
+			function.apply(packet);
 		
-		return false;
+		return matches;
 	}
 	
 	/* 
