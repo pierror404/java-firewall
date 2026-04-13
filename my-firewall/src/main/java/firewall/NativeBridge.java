@@ -2,8 +2,21 @@ package firewall;
 
 import java.io.*;
 import java.nio.file.*;
+import java.util.List;
+
+import elements.MyPacket;
+import exceptions.IllegalIPv4Exception;
+import exceptions.IllegalSubnetException;
+import rules.Rule;
+import utils.MyPacketParser;
 
 public class NativeBridge {
+	
+	private static FirewallEngine firewall;
+	
+	public NativeBridge(List<Rule> rules) {
+		firewall = new FirewallEngine(rules);
+	}
 	
     static {
         try {
@@ -33,6 +46,13 @@ public class NativeBridge {
     		 * 		- collection of the results
     		 * 		- return the and of the results 
     		 * */
-    		return false;
+    	
+    		try {
+				MyPacket pack = MyPacketParser.fromRaw(packet);
+				return firewall.evaluate(pack);
+				
+		} catch (NumberFormatException | IllegalSubnetException | IllegalIPv4Exception e) {
+				return false;
+		}
     }
 }
