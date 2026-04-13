@@ -4,5 +4,5 @@ import elements.MyPacket;
 
 @FunctionalInterface
 public interface ITriggeringRule {
-	public void apply(MyPacket packet);
+	public boolean apply(MyPacket packet);
 }

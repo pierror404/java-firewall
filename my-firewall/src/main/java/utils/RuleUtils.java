@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import rules.ITriggeringRule;
 
 public class RuleUtils {
-	public static ITriggeringRule getLogFunction(String filename) {
+	public static ITriggeringRule getLogDenyFunction(String filename) {
 		ITriggeringRule logfunction = (packet) -> {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			String timestamp = LocalDateTime.now().format(formatter);
@@ -17,20 +17,35 @@ public class RuleUtils {
 			} catch (IOException e) {
 	            System.err.println("Errore nel logging del pacchetto: " + e.getMessage());
 	        }
+			return true;
+		};
+		return logfunction;
+	}
+	
+	public static ITriggeringRule getLogAllowFunction(String filename) {
+		ITriggeringRule logfunction = (packet) -> {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			String timestamp = LocalDateTime.now().format(formatter);
+			try (FileWriter writer = new FileWriter(filename, true)) {
+				writer.write("[" + timestamp + "] " + packet.toString() + "\n");
+			} catch (IOException e) {
+	            System.err.println("Errore nel logging del pacchetto: " + e.getMessage());
+	        }
+			return false;
 		};
 		return logfunction;
 	}
 	
 	public static ITriggeringRule getDefaultDenyFunction() {
-		ITriggeringRule function = (packet) -> {
-			// TODO: drop the packet
+		ITriggeringRule function = (_) -> {
+			return true;
 		};
 		return function;
 	}
 	
 	public static ITriggeringRule getDefaultAllowFunction() {
-		ITriggeringRule function = (packet) -> {
-			// TODO: let the packet pass
+		ITriggeringRule function = (_) -> {
+			return false;
 		};
 		return function;
 	}

@@ -2,5 +2,6 @@ package elements;
 
 public enum Direction {
 	IN,
-	OUT
+	OUT,
+	FORWARD
 }

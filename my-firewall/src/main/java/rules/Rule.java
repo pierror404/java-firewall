@@ -2,9 +2,12 @@ package rules;
 
 import elements.Layer;
 import utils.RuleUtils;
+import elements.ApplicationLayerProtocol;
 import elements.Direction;
 import elements.IProtocol;
 import elements.MyPacket;
+import elements.NetworkLayerProtocol;
+import elements.TransportLayerProtocol;
 
 public class Rule implements IRule {
 	
@@ -56,15 +59,39 @@ public class Rule implements IRule {
 	
 	public boolean evaluate(MyPacket packet) {
 		boolean matches = false;
+		boolean dest = false;
+		boolean src = false;
+		boolean proto = false;
+		
 		/* Matches destination */
+		dest = (this.destination.network().isPresent() && this.destination.network().get().contains(packet.destinationAddress().get())) ||
+				(this.destination.ip().isPresent() && this.destination.ip().get().equals(packet.destinationAddress().get()));
 		
 		/* Matches source */
 		
+		src = (this.source.network().isPresent() && this.source.network().get().contains(packet.sourceAddress().get())) ||
+				(this.source.ip().isPresent() && this.source.ip().get().equals(packet.sourceAddress().get()));
+		
 		/* Matches protocol */
+		proto = (this.protocol instanceof ApplicationLayerProtocol && packet.applicationProtocol().isPresent() && this.protocol == packet.applicationProtocol().get()) ||
+				(this.protocol instanceof TransportLayerProtocol && packet.transportProtocol().isPresent() && this.protocol == packet.transportProtocol().get()) ||
+				(this.protocol instanceof NetworkLayerProtocol && packet.networkProtocol().isPresent() && this.protocol == packet.networkProtocol().get());
+		
+		
+		if(this.direction == Direction.IN) {
+			matches = dest;
+		} else if(this.direction == Direction.OUT) {
+			matches = src;
+		} else {
+			matches = src || dest;
+		}
+		
+		matches &= proto;
 		
 		/* Trigger function */
-		if(matches)
-			function.apply(packet);
+		if(matches) {
+			matches = function.apply(packet);
+		}
 		
 		return matches;
 	}
@@ -82,8 +109,12 @@ public class Rule implements IRule {
 	 * 	- TRIGGER can either just drop the packet, or execute a custom function and then drop the packet
 	 */
 	
-	public static Rule createLoggingRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, String filename, Direction direction) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getLogFunction(filename), direction);
+	public static Rule createDenyLoggingRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, String filename, Direction direction) {
+		return new Rule(layer, protocol, source, destination, RuleUtils.getLogDenyFunction(filename), direction);
+	}
+	
+	public static Rule createAllowLoggingRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, String filename, Direction direction) {
+		return new Rule(layer, protocol, source, destination, RuleUtils.getLogAllowFunction(filename), direction);
 	}
 	
 	public static Rule createTriggerRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, ITriggeringRule function, Direction direction) {
