@@ -21,13 +21,6 @@ public class FirewallEngine {
     }
 	
     public boolean evaluate(MyPacket packet) {
-    		/*
-    		 * Must implement:
-    		 * 		- check every rule multi-threaded
-    		 * 		- result collection
-    		 * 		- return the or of the results
-    		 * 
-    		 * */
         List<CompletableFuture<Boolean>> futures = rules.stream()
                 .map(rule -> CompletableFuture.supplyAsync(() -> rule.evaluate(packet))).toList();
 

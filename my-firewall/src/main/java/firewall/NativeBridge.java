@@ -39,14 +39,6 @@ public class NativeBridge {
     public native void startFirewall();
 
     public static boolean isMalicious(byte[] packet, int len) {
-    		/*
-    		 * TODO: fake, must implement:
-    		 * 		- parsing the packet
-    		 * 		- must run an instance of the engine that checks the rules (multi-threaded)
-    		 * 		- collection of the results
-    		 * 		- return the and of the results 
-    		 * */
-    	
     		try {
 				MyPacket pack = MyPacketParser.fromRaw(packet);
 				return firewall.evaluate(pack);
