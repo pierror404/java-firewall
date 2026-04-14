@@ -68,10 +68,12 @@ Requirements to build and run:
 
 To build:
 ```bat
+cd my-firewall
 mvn clean package
 ```
 To run:
 ```bat
+cd my-firewall
 java "-Djava.library.path=target" --enable-native-access=ALL-UNNAMED -jar target\my-firewall-0.0.1-SNAPSHOT.jar
 ```
 I've just tested the classes that are shown in the `test` directory in the project tree, but logically everything should work. Imma test it later :).\
