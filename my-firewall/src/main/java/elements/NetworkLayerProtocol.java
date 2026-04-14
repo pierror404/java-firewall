@@ -4,7 +4,7 @@ public enum NetworkLayerProtocol implements IProtocol{
 	IPv4("IPv4"),		
 	IPv6("IPv6"),
 	ARP("ARP"),		
-	ICMP("ICMP"),		
+	ICMP("ICMP"),
 	NAT("NAT"),		
 	RIP("RIP"), 		
 	OSPF("OSPF"),	  	

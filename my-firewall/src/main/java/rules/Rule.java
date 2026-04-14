@@ -58,9 +58,6 @@ public class Rule implements IRule {
 	 * */
 	
 	public boolean evaluate(MyPacket packet) {
-		
-		System.out.println(packet);
-		
 		boolean matches = false;
 		boolean dest = false;
 		boolean src = false;
@@ -75,9 +72,10 @@ public class Rule implements IRule {
 		src = (this.source.network().isPresent() && this.source.network().get().contains(packet.sourceAddress().get())) ||
 				(this.source.ip().isPresent() && this.source.ip().get().equals(packet.sourceAddress().get()));
 		
-		System.out.println("Matches source: " + src);
-		
 		/* Matches protocol */
+		
+		System.out.println("Rule protocol: " + this.protocol);
+		System.out.println("Packet network?: " + (packet.networkProtocol().isPresent() ? packet.networkProtocol().get() : null));
 		proto = (this.protocol instanceof ApplicationLayerProtocol && packet.applicationProtocol().isPresent() && this.protocol == packet.applicationProtocol().get()) ||
 				(this.protocol instanceof TransportLayerProtocol && packet.transportProtocol().isPresent() && this.protocol == packet.transportProtocol().get()) ||
 				(this.protocol instanceof NetworkLayerProtocol && packet.networkProtocol().isPresent() && this.protocol == packet.networkProtocol().get());
@@ -93,8 +91,12 @@ public class Rule implements IRule {
 		
 		matches &= proto;
 		
+		System.out.println("Rule: proto" + proto + ", src " + src);
+		System.out.println("Rule matches? " + matches);
+		
 		/* Trigger function */
 		if(matches) {
+			System.out.println("Rule matches");
 			matches = function.apply(packet);
 		}
 		

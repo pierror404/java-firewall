@@ -1,5 +1,6 @@
 package utils;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import rules.ITriggeringRule;
 public class RuleUtils {
 	public static ITriggeringRule getLogDenyFunction(String filename) {
 		ITriggeringRule logfunction = (packet) -> {
+			System.out.println("Scrivo su: " + new File(filename).getAbsolutePath());
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			String timestamp = LocalDateTime.now().format(formatter);
 			try (FileWriter writer = new FileWriter(filename, true)) {
@@ -24,6 +26,7 @@ public class RuleUtils {
 	
 	public static ITriggeringRule getLogAllowFunction(String filename) {
 		ITriggeringRule logfunction = (packet) -> {
+			System.out.println("Scrivo su: " + new File(filename).getAbsolutePath());
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			String timestamp = LocalDateTime.now().format(formatter);
 			try (FileWriter writer = new FileWriter(filename, true)) {

@@ -8,6 +8,7 @@ public class ProtocolFactory {
             case 2 -> NetworkLayerProtocol.IGMP;
             case 4 -> NetworkLayerProtocol.IPv4;
             case 41 -> NetworkLayerProtocol.IPv6;
+            case 58  -> NetworkLayerProtocol.ICMP;     // ICMPv6
             case 89 -> NetworkLayerProtocol.OSPF;
             default -> null;
         };

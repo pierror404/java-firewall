@@ -40,6 +40,7 @@ public class NativeBridge {
     public static boolean isMalicious(byte[] packet, int len) {
     		try {
 				MyPacket pack = MyPacketParser.fromRaw(packet);
+				System.out.println(pack);
 				return firewall.evaluate(pack);
 				
 		} catch (Exception e) {

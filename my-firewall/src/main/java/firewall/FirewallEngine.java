@@ -22,7 +22,7 @@ public class FirewallEngine {
 	
     public boolean evaluate(MyPacket packet) {
         List<CompletableFuture<Boolean>> futures = rules.stream()
-                .map(rule -> CompletableFuture.supplyAsync(() -> {System.out.println("Evaluating rule: " + rule); return rule.evaluate(packet);})).toList();
+                .map(rule -> CompletableFuture.supplyAsync(() -> { return rule.evaluate(packet); })).toList();
 
             CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 

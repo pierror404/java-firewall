@@ -33,109 +33,110 @@ public class MyPacketParser {
         // =========================
         if (version == 4) {
 
-            int ihl = (raw[0] & 0x0F) * 4;
-            if (raw.length < ihl) return emptyPacket();
-
-            int protocolNumber = raw[9] & 0xFF;
-
-            // IP addresses
-            IP srcIp = IPv4.fromString(
-                (raw[12] & 0xFF) + "." +
-                (raw[13] & 0xFF) + "." +
-                (raw[14] & 0xFF) + "." +
-                (raw[15] & 0xFF)
-            );
-
-            IP dstIp = IPv4.fromString(
-                (raw[16] & 0xFF) + "." +
-                (raw[17] & 0xFF) + "." +
-                (raw[18] & 0xFF) + "." +
-                (raw[19] & 0xFF)
-            );
-
-            byte[] ipHeader = Arrays.copyOfRange(raw, 0, ihl);
-
-            // =========================
-            // Transport layer
-            // =========================
-            Optional<NetPort> srcPort = Optional.empty();
-            Optional<NetPort> dstPort = Optional.empty();
-            Optional<byte[]> transportHeader = Optional.empty();
-
-            IProtocol transportProto = ProtocolFactory.fromTransportNumber(protocolNumber);
-
-            int payloadOffset = ihl;
-
-            if (transportProto == TransportLayerProtocol.TCP ||
-                transportProto == TransportLayerProtocol.UDP) {
-
-                if (raw.length < ihl + 8) return emptyPacket();
-
-                int sPort = ((raw[payloadOffset] & 0xFF) << 8) | (raw[payloadOffset + 1] & 0xFF);
-                int dPort = ((raw[payloadOffset + 2] & 0xFF) << 8) | (raw[payloadOffset + 3] & 0xFF);
-
-                srcPort = Optional.of(new NetPort(sPort));
-                dstPort = Optional.of(new NetPort(dPort));
-
-                int transportHeaderLen = (transportProto == TransportLayerProtocol.TCP)
-                        ? ((raw[payloadOffset + 12] >> 4) & 0xF) * 4
-                        : 8;
-
-                transportHeader = Optional.of(
-                    Arrays.copyOfRange(raw, payloadOffset, payloadOffset + transportHeaderLen)
-                );
-
-                payloadOffset += transportHeaderLen;
-            }
-
-            // =========================
-            // Payload
-            // =========================
-            Optional<byte[]> payload = Optional.empty();
-
-            if (payloadOffset < raw.length) {
-                payload = Optional.of(
-                    Arrays.copyOfRange(raw, payloadOffset, raw.length)
-                );
-            }
-
-            // =========================
-            // Application layer (heuristic)
-            // =========================
-            IProtocol appProto = null;
-
-            if (dstPort.isPresent()) {
-                appProto = ProtocolFactory.fromPort(dstPort.get().getPort());
-            }
-
-            // fallback payload detection (utile per HTTP)
-            if (payload.isPresent() && appProto == null) {
-                String data = new String(payload.get());
-
-                if (data.startsWith("GET") || data.startsWith("POST") || data.startsWith("HTTP")) {
-                    appProto = ApplicationLayerProtocol.HTTP;
-                } else if (data.contains("DNS")) {
-                    appProto = ApplicationLayerProtocol.DNS;
-                }
-            }
-
-            return new MyPacket(
-                Optional.of(srcIp),
-                srcPort,
-                Optional.of(dstIp),
-                dstPort,
-
-                // =========================
-                // 3 livelli protocollo
-                // =========================
-                Optional.of(NetworkLayerProtocol.IPv4),
-                Optional.ofNullable(transportProto),
-                Optional.ofNullable(appProto),
-
-                Optional.of(ipHeader),
-                transportHeader,
-                payload
-            );
+//            int ihl = (raw[0] & 0x0F) * 4;
+//            if (raw.length < ihl) return emptyPacket();
+//
+//            int protocolNumber = raw[9] & 0xFF;
+//
+//            // IP addresses
+//            IP srcIp = IPv4.fromString(
+//                (raw[12] & 0xFF) + "." +
+//                (raw[13] & 0xFF) + "." +
+//                (raw[14] & 0xFF) + "." +
+//                (raw[15] & 0xFF)
+//            );
+//
+//            IP dstIp = IPv4.fromString(
+//                (raw[16] & 0xFF) + "." +
+//                (raw[17] & 0xFF) + "." +
+//                (raw[18] & 0xFF) + "." +
+//                (raw[19] & 0xFF)
+//            );
+//
+//            byte[] ipHeader = Arrays.copyOfRange(raw, 0, ihl);
+//
+//            // =========================
+//            // Transport layer
+//            // =========================
+//            Optional<NetPort> srcPort = Optional.empty();
+//            Optional<NetPort> dstPort = Optional.empty();
+//            Optional<byte[]> transportHeader = Optional.empty();
+//
+//            IProtocol transportProto = ProtocolFactory.fromTransportNumber(protocolNumber);
+//
+//            int payloadOffset = ihl;
+//
+//            if (transportProto == TransportLayerProtocol.TCP ||
+//                transportProto == TransportLayerProtocol.UDP) {
+//
+//                if (raw.length < ihl + 8) return emptyPacket();
+//
+//                int sPort = ((raw[payloadOffset] & 0xFF) << 8) | (raw[payloadOffset + 1] & 0xFF);
+//                int dPort = ((raw[payloadOffset + 2] & 0xFF) << 8) | (raw[payloadOffset + 3] & 0xFF);
+//
+//                srcPort = Optional.of(new NetPort(sPort));
+//                dstPort = Optional.of(new NetPort(dPort));
+//
+//                int transportHeaderLen = (transportProto == TransportLayerProtocol.TCP)
+//                        ? ((raw[payloadOffset + 12] >> 4) & 0xF) * 4
+//                        : 8;
+//
+//                transportHeader = Optional.of(
+//                    Arrays.copyOfRange(raw, payloadOffset, payloadOffset + transportHeaderLen)
+//                );
+//
+//                payloadOffset += transportHeaderLen;
+//            }
+//
+//            // =========================
+//            // Payload
+//            // =========================
+//            Optional<byte[]> payload = Optional.empty();
+//
+//            if (payloadOffset < raw.length) {
+//                payload = Optional.of(
+//                    Arrays.copyOfRange(raw, payloadOffset, raw.length)
+//                );
+//            }
+//
+//            // =========================
+//            // Application layer (heuristic)
+//            // =========================
+//            IProtocol appProto = null;
+//
+//            if (dstPort.isPresent()) {
+//                appProto = ProtocolFactory.fromPort(dstPort.get().getPort());
+//            }
+//
+//            // fallback payload detection (utile per HTTP)
+//            if (payload.isPresent() && appProto == null) {
+//                String data = new String(payload.get());
+//
+//                if (data.startsWith("GET") || data.startsWith("POST") || data.startsWith("HTTP")) {
+//                    appProto = ApplicationLayerProtocol.HTTP;
+//                } else if (data.contains("DNS")) {
+//                    appProto = ApplicationLayerProtocol.DNS;
+//                }
+//            }
+//
+//            return new MyPacket(
+//                Optional.of(srcIp),
+//                srcPort,
+//                Optional.of(dstIp),
+//                dstPort,
+//
+//                // =========================
+//                // 3 livelli protocollo
+//                // =========================
+//                Optional.of(NetworkLayerProtocol.IPv4),
+//                Optional.ofNullable(transportProto),
+//                Optional.ofNullable(appProto),
+//
+//                Optional.of(ipHeader),
+//                transportHeader,
+//                payload
+//            );
+        		return parseIPv4(raw);
         }
 
         // =========================
@@ -143,29 +144,30 @@ public class MyPacketParser {
         // =========================
         if (version == 6) {
 
-            if (raw.length < 40) return emptyPacket();
-
-            IP srcIp = IPv6.fromString(ipv6ToString(raw, 8));
-            IP dstIp = IPv6.fromString(ipv6ToString(raw, 24));
-
-            int nextHeader = raw[6] & 0xFF;
-
-            IProtocol transportProto = ProtocolFactory.fromTransportNumber(nextHeader);
-
-            return new MyPacket(
-                Optional.of(srcIp),
-                Optional.empty(),
-                Optional.of(dstIp),
-                Optional.empty(),
-
-                Optional.of(NetworkLayerProtocol.IPv6),
-                Optional.ofNullable(transportProto),
-                Optional.empty(),
-
-                Optional.of(Arrays.copyOfRange(raw, 0, 40)),
-                Optional.empty(),
-                Optional.empty()
-            );
+//            if (raw.length < 40) return emptyPacket();
+//
+//            IP srcIp = IPv6.fromString(ipv6ToString(raw, 8));
+//            IP dstIp = IPv6.fromString(ipv6ToString(raw, 24));
+//
+//            int nextHeader = raw[6] & 0xFF;
+//
+//            IProtocol transportProto = ProtocolFactory.fromTransportNumber(nextHeader);
+//
+//            return new MyPacket(
+//                Optional.of(srcIp),
+//                Optional.empty(),
+//                Optional.of(dstIp),
+//                Optional.empty(),
+//
+//                Optional.of(NetworkLayerProtocol.IPv6),
+//                Optional.ofNullable(transportProto),
+//                Optional.empty(),
+//
+//                Optional.of(Arrays.copyOfRange(raw, 0, 40)),
+//                Optional.empty(),
+//                Optional.empty()
+//            );
+        		return parseIPv6(raw);
         }
 
         return emptyPacket();
@@ -199,5 +201,155 @@ public class MyPacketParser {
         }
 
         return sb.toString();
+    }
+    
+    private static MyPacket parseIPv4(byte[] raw) throws IllegalIPv4Exception, IllegalSubnetException {
+
+        int ihl = (raw[0] & 0x0F) * 4;
+        if (raw.length < ihl) return emptyPacket();
+
+        int protocolNumber = raw[9] & 0xFF;
+
+        // IP addresses
+        IP srcIp = IPv4.fromString(
+            (raw[12] & 0xFF) + "." +
+            (raw[13] & 0xFF) + "." +
+            (raw[14] & 0xFF) + "." +
+            (raw[15] & 0xFF)
+        );
+
+        IP dstIp = IPv4.fromString(
+            (raw[16] & 0xFF) + "." +
+            (raw[17] & 0xFF) + "." +
+            (raw[18] & 0xFF) + "." +
+            (raw[19] & 0xFF)
+        );
+
+        byte[] ipHeader = Arrays.copyOfRange(raw, 0, ihl);
+
+        // =========================
+        // NETWORK PROTOCOL (ICMP, IGMP, OSPF…)
+        // =========================
+        IProtocol nextHeader = ProtocolFactory.fromNetworkNumber(protocolNumber);
+
+        NetworkLayerProtocol networkProto;
+        IProtocol transportProto = null;
+
+        if (nextHeader instanceof NetworkLayerProtocol nl) {
+            // ICMP, IGMP, OSPF…
+            networkProto = nl;
+        } else {
+            // TCP, UDP, SCTP…
+            networkProto = NetworkLayerProtocol.IPv4;
+            transportProto = ProtocolFactory.fromTransportNumber(protocolNumber);
+        }
+
+        // =========================
+        // TRANSPORT HEADER (solo TCP/UDP/SCTP)
+        // =========================
+        Optional<NetPort> srcPort = Optional.empty();
+        Optional<NetPort> dstPort = Optional.empty();
+        Optional<byte[]> transportHeader = Optional.empty();
+
+        int payloadOffset = ihl;
+
+        if (transportProto == TransportLayerProtocol.TCP ||
+            transportProto == TransportLayerProtocol.UDP ||
+            transportProto == TransportLayerProtocol.SCTP) {
+
+            if (raw.length < ihl + 8) return emptyPacket();
+
+            int sPort = ((raw[payloadOffset] & 0xFF) << 8) | (raw[payloadOffset + 1] & 0xFF);
+            int dPort = ((raw[payloadOffset + 2] & 0xFF) << 8) | (raw[payloadOffset + 3] & 0xFF);
+
+            srcPort = Optional.of(new NetPort(sPort));
+            dstPort = Optional.of(new NetPort(dPort));
+
+            int transportHeaderLen = (transportProto == TransportLayerProtocol.TCP)
+                    ? ((raw[payloadOffset + 12] >> 4) & 0xF) * 4
+                    : 8;
+
+            transportHeader = Optional.of(
+                Arrays.copyOfRange(raw, payloadOffset, payloadOffset + transportHeaderLen)
+            );
+
+            payloadOffset += transportHeaderLen;
+        }
+
+        // =========================
+        // PAYLOAD
+        // =========================
+        Optional<byte[]> payload = Optional.empty();
+        if (payloadOffset < raw.length) {
+            payload = Optional.of(Arrays.copyOfRange(raw, payloadOffset, raw.length));
+        }
+
+        // =========================
+        // APPLICATION PROTOCOL
+        // =========================
+        IProtocol appProto = null;
+
+        if (dstPort.isPresent()) {
+            appProto = ProtocolFactory.fromPort(dstPort.get().getPort());
+        }
+
+        if (payload.isPresent() && appProto == null) {
+            String data = new String(payload.get());
+            if (data.startsWith("GET") || data.startsWith("POST") || data.startsWith("HTTP"))
+                appProto = ApplicationLayerProtocol.HTTP;
+            else if (data.contains("DNS"))
+                appProto = ApplicationLayerProtocol.DNS;
+        }
+
+        return new MyPacket(
+            Optional.of(srcIp),
+            srcPort,
+            Optional.of(dstIp),
+            dstPort,
+            Optional.of(networkProto),
+            Optional.ofNullable(transportProto),
+            Optional.ofNullable(appProto),
+            Optional.of(ipHeader),
+            transportHeader,
+            payload
+        );
+    }
+    
+    private static MyPacket parseIPv6(byte[] raw) throws IllegalIPv4Exception, IllegalSubnetException {
+
+        if (raw.length < 40) return emptyPacket();
+
+        IP srcIp = IPv6.fromString(ipv6ToString(raw, 8));
+        IP dstIp = IPv6.fromString(ipv6ToString(raw, 24));
+
+        int nextHeader = raw[6] & 0xFF;
+
+        // =========================
+        // NETWORK PROTOCOL (ICMPv6)
+        // =========================
+        IProtocol netCandidate = ProtocolFactory.fromNetworkNumber(nextHeader);
+
+        NetworkLayerProtocol networkProto;
+        IProtocol transportProto = null;
+
+        if (netCandidate instanceof NetworkLayerProtocol nl) {
+            networkProto = nl; // ICMPv6, OSPF, ecc.
+        } else {
+            networkProto = NetworkLayerProtocol.IPv6;
+            transportProto = ProtocolFactory.fromTransportNumber(nextHeader);
+        }
+
+        return new MyPacket(
+            Optional.of(srcIp),
+            Optional.empty(),
+            Optional.of(dstIp),
+            Optional.empty(),
+            Optional.of(networkProto),
+            Optional.ofNullable(transportProto),
+            Optional.empty(),
+            Optional.of(Arrays.copyOfRange(raw, 0, 40)),
+            Optional.empty(),
+            Optional.empty()
+        );
     }
 }
