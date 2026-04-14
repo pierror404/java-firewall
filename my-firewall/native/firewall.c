@@ -1,9 +1,9 @@
 #include <jni.h>
 #include <windows.h>
 #include "windivert.h"
-#include "com_example_firewall_NativeBridge.h"
+#include "firewall_NativeBridge.h"
 
-JNIEXPORT void JNICALL Java_com_example_firewall_NativeBridge_startFirewall
+JNIEXPORT void JNICALL Java_firewall_NativeBridge_startFirewall
   (JNIEnv *env, jobject obj) {
 
     HANDLE handle;
@@ -13,11 +13,13 @@ JNIEXPORT void JNICALL Java_com_example_firewall_NativeBridge_startFirewall
 
     handle = WinDivertOpen("true", WINDIVERT_LAYER_NETWORK, 0, 0);
 
-    if (handle == INVALID_HANDLE_VALUE) {
-        return;
-    }
+	if (handle == INVALID_HANDLE_VALUE) {
+	    DWORD err = GetLastError();
+	    printf("WinDivertOpen failed: %lu\n", err);
+	    return;
+	}
 
-    jclass cls = (*env)->FindClass(env, "com/example/firewall/NativeBridge");
+    jclass cls = (*env)->FindClass(env, "firewall/NativeBridge");
     jmethodID mid = (*env)->GetStaticMethodID(env, cls, "isMalicious", "([BI)Z");
 
     while (TRUE) {

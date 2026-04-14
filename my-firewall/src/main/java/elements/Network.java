@@ -29,7 +29,7 @@ public class Network {
 
     @Override
     public String toString() {
-        return ip.toString() + "/" + subnet.toString();
+        return ip.toString() + "/" + (subnet instanceof IPv4Subnet ? ((IPv4Subnet) subnet).getSlashNotation() : subnet.toString());
     }
 
     @Override
@@ -97,7 +97,7 @@ public class Network {
         if (ipPart.contains(".")) {
             return new Network(
                 IPv4.fromString(ipPart),
-                IPv4Subnet.fromString(subnetPart)
+                IPv4Subnet.fromSlashNotation(Short.valueOf(subnetPart))
             );
         }
         // IPv6 case (prefix notation)

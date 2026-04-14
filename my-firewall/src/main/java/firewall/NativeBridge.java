@@ -5,8 +5,6 @@ import java.nio.file.*;
 import java.util.List;
 
 import elements.MyPacket;
-import exceptions.IllegalIPv4Exception;
-import exceptions.IllegalSubnetException;
 import rules.Rule;
 import utils.MyPacketParser;
 
@@ -18,23 +16,24 @@ public class NativeBridge {
 		firewall = new FirewallEngine(rules);
 	}
 	
-    static {
-        try {
-            loadDll("firewall.dll");
-            loadDll("WinDivert.dll");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	static {
+	    try {
+	        System.load(Paths.get("native/WinDivert.dll").toAbsolutePath().toString());
+	        System.load(Paths.get("native/firewall.dll").toAbsolutePath().toString());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 
-    private static void loadDll(String name) throws Exception {
+
+    /*private static void loadDll(String name) throws Exception {
         InputStream in = NativeBridge.class.getResourceAsStream("/native/" + name);
         File temp = File.createTempFile(name, "");
         temp.deleteOnExit();
 
         Files.copy(in, temp.toPath(), StandardCopyOption.REPLACE_EXISTING);
         System.load(temp.getAbsolutePath());
-    }
+    }*/
 
     public native void startFirewall();
 
@@ -43,7 +42,7 @@ public class NativeBridge {
 				MyPacket pack = MyPacketParser.fromRaw(packet);
 				return firewall.evaluate(pack);
 				
-		} catch (NumberFormatException | IllegalSubnetException | IllegalIPv4Exception e) {
+		} catch (Exception e) {
 				return false;
 		}
     }

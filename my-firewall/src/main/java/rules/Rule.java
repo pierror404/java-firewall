@@ -58,6 +58,9 @@ public class Rule implements IRule {
 	 * */
 	
 	public boolean evaluate(MyPacket packet) {
+		
+		System.out.println(packet);
+		
 		boolean matches = false;
 		boolean dest = false;
 		boolean src = false;
@@ -71,6 +74,8 @@ public class Rule implements IRule {
 		
 		src = (this.source.network().isPresent() && this.source.network().get().contains(packet.sourceAddress().get())) ||
 				(this.source.ip().isPresent() && this.source.ip().get().equals(packet.sourceAddress().get()));
+		
+		System.out.println("Matches source: " + src);
 		
 		/* Matches protocol */
 		proto = (this.protocol instanceof ApplicationLayerProtocol && packet.applicationProtocol().isPresent() && this.protocol == packet.applicationProtocol().get()) ||

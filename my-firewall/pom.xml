@@ -1,21 +1,29 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>com.pier</groupId>
   <artifactId>my-firewall</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+
   <name>My Java Firewall</name>
   <description>My custom java firewall</description>
-  
+
+  <!-- 🔥 AGGIUNGI QUESTO -->
+  <properties>
+      <maven.compiler.release>25</maven.compiler.release>
+  </properties>
+
   <dependencies>
 
-	<!-- FOR PACKET SNIFFING -->
     <dependency>
         <groupId>org.pcap4j</groupId>
         <artifactId>pcap4j-core</artifactId>
         <version>1.8.2</version>
     </dependency>
-    
-    <!-- FOR TESTING -->
+
     <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter</artifactId>
@@ -23,5 +31,80 @@
         <scope>test</scope>
     </dependency>
 
-</dependencies>
+  </dependencies>
+
+  <build>
+	
+    <plugins>
+
+        <!-- COMPILATORE JAVA -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.15.0</version>
+            <configuration>
+                <release>25</release>
+                <compilerArgs>
+            			<arg>-h</arg>
+            			<arg>${project.basedir}/native</arg>
+        			</compilerArgs>
+            </configuration>
+        </plugin>
+
+        <!-- BUILD NATIVA C -->
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.1.0</version>
+
+            <executions>
+                <execution>
+                    <id>build-native</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>exec</goal>
+                    </goals>
+
+                    <configuration>
+                        <executable>cmd</executable>
+                        <workingDirectory>${project.basedir}/native</workingDirectory>
+                        <arguments>
+                            <argument>/c</argument>
+                            <argument>build-native.bat</argument>
+                        </arguments>
+                    </configuration>
+
+                </execution>
+            </executions>
+
+        </plugin>
+        
+        <!-- JAR -->
+        <plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-jar-plugin</artifactId>
+    			<version>3.3.0</version>
+    			<configuration>
+        			<archive>
+            			<manifest>
+                			<mainClass>main.Main</mainClass>
+            			</manifest>
+        			</archive>
+    			</configuration>
+		</plugin>
+
+    </plugins>
+    <resources>
+    		<resource>
+        		<directory>native</directory>
+        		<includes>
+            		<include>firewall.dll</include>
+            		<include>WinDivert.dll</include>
+            		<include>WinDivert64.sys</include>
+        		</includes>
+        		<targetPath>native</targetPath>
+    		</resource>
+	</resources>
+  </build>
+
 </project>

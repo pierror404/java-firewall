@@ -13,7 +13,7 @@ public class FirewallEngine {
     private final List<Rule> rules;
 
     public FirewallEngine(List<Rule> rules) {
-        this.rules = new CopyOnWriteArrayList<>();
+        this.rules = new CopyOnWriteArrayList<>(rules);
     }
 
     public void addRule(Rule rule) {
@@ -22,7 +22,7 @@ public class FirewallEngine {
 	
     public boolean evaluate(MyPacket packet) {
         List<CompletableFuture<Boolean>> futures = rules.stream()
-                .map(rule -> CompletableFuture.supplyAsync(() -> rule.evaluate(packet))).toList();
+                .map(rule -> CompletableFuture.supplyAsync(() -> {System.out.println("Evaluating rule: " + rule); return rule.evaluate(packet);})).toList();
 
             CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 
