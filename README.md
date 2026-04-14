@@ -59,6 +59,20 @@ The project strucure:
                         ├── NetworkTest.java
                         └── SubnetMaskTest.java
 ```
-I will provide every information to compile and run the project later when I will do it myself. \
-I've just tested the classes that are shown in the `test` directory in the project tree, but logically everything should work. Imma test it later.\
+Requirements to build and run:
+- Java 22+
+- Maven 3.9.14 (I used it, maybe an older version could be fine too)
+- MSVC to compile the C-based part
+- x64 architecture
+- Windows operating system: for Linux based systems, I'm sorry...I will provide a future version with Linux support too
+
+To build:
+```bat
+mvn clean package
+```
+To run:
+```bat
+java "-Djava.library.path=target" --enable-native-access=ALL-UNNAMED -jar target\my-firewall-0.0.1-SNAPSHOT.jar
+```
+I've just tested the classes that are shown in the `test` directory in the project tree, but logically everything should work. Imma test it later :).\
 I will also, some day in the future, add the support to linux and macOS systems, but nowadays this can only run on Windows systems.
