@@ -17,8 +17,9 @@ public class Rule implements IRule {
 	private Endpoint destination;
 	private ITriggeringRule function;
 	private Direction direction;
+	private RuleState state;
 	
-	protected Rule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, ITriggeringRule function, Direction direction) {
+	private Rule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, ITriggeringRule function, Direction direction) {
 		super();
 		this.layer = layer;
 		this.protocol = protocol;
@@ -26,6 +27,7 @@ public class Rule implements IRule {
 		this.destination = destination;
 		this.function = function;
 		this.direction = direction;
+		this.state = new RuleState();
 	}
 	
 	public ITriggeringRule getFunction() {
@@ -46,6 +48,10 @@ public class Rule implements IRule {
 	
 	public Direction getDirection() {
 		return direction;
+	}
+	
+	public RuleState getState() {
+		return state;
 	}
 
 	@Override
@@ -91,7 +97,11 @@ public class Rule implements IRule {
 		
 		/* Trigger function */
 		if(matches) {
-			matches = function.apply(packet);
+			if(this.state.getHitcount() == 0)
+				this.state.setFirstSeen(System.currentTimeMillis());
+			this.state.setLastSeen(System.currentTimeMillis());
+			this.state.increaseHitcount();
+			matches = function.apply(packet, this);
 		}
 		
 		return matches;

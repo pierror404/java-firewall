@@ -10,7 +10,7 @@ import rules.ITriggeringRule;
 
 public class RuleUtils {
 	public static ITriggeringRule getLogDenyFunction(String filename) {
-		ITriggeringRule logfunction = (packet) -> {
+		ITriggeringRule logfunction = (packet, _) -> {
 			writeOnLogFile(packet, filename);
 			return true;
 		};
@@ -18,7 +18,7 @@ public class RuleUtils {
 	}
 	
 	public static ITriggeringRule getLogAllowFunction(String filename) {
-		ITriggeringRule logfunction = (packet) -> {
+		ITriggeringRule logfunction = (packet, _) -> {
 			writeOnLogFile(packet, filename);
 			return false;
 		};
@@ -26,14 +26,14 @@ public class RuleUtils {
 	}
 	
 	public static ITriggeringRule getDefaultDenyFunction() {
-		ITriggeringRule function = (_) -> {
+		ITriggeringRule function = (_, _) -> {
 			return true;
 		};
 		return function;
 	}
 	
 	public static ITriggeringRule getDefaultAllowFunction() {
-		ITriggeringRule function = (_) -> {
+		ITriggeringRule function = (_, _) -> {
 			return false;
 		};
 		return function;
@@ -55,5 +55,19 @@ public class RuleUtils {
 	
 	public static boolean allow() {
 		return false;
+	}
+	
+	public static ITriggeringRule dropAfterThreshold(int count) {
+		ITriggeringRule function = (_, rule) -> {
+			return rule.getState().getHitcount() >= count;
+		};
+		return function;
+	}
+	
+	public static ITriggeringRule acceptAfterThreshold(int count) {
+		ITriggeringRule function = (_, rule) -> {
+			return rule.getState().getHitcount() < count;
+		};
+		return function;
 	}
 }
