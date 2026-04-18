@@ -18,7 +18,7 @@ public class Rule implements IRule {
 	private ITriggeringRule function;
 	private Direction direction;
 	
-	private Rule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, ITriggeringRule function, Direction direction) {
+	protected Rule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, ITriggeringRule function, Direction direction) {
 		super();
 		this.layer = layer;
 		this.protocol = protocol;
@@ -74,8 +74,6 @@ public class Rule implements IRule {
 		
 		/* Matches protocol */
 		
-		System.out.println("Rule protocol: " + this.protocol);
-		System.out.println("Packet network?: " + (packet.networkProtocol().isPresent() ? packet.networkProtocol().get() : null));
 		proto = (this.protocol instanceof ApplicationLayerProtocol && packet.applicationProtocol().isPresent() && this.protocol == packet.applicationProtocol().get()) ||
 				(this.protocol instanceof TransportLayerProtocol && packet.transportProtocol().isPresent() && this.protocol == packet.transportProtocol().get()) ||
 				(this.protocol instanceof NetworkLayerProtocol && packet.networkProtocol().isPresent() && this.protocol == packet.networkProtocol().get());
@@ -91,12 +89,8 @@ public class Rule implements IRule {
 		
 		matches &= proto;
 		
-		System.out.println("Rule: proto" + proto + ", src " + src);
-		System.out.println("Rule matches? " + matches);
-		
 		/* Trigger function */
 		if(matches) {
-			System.out.println("Rule matches");
 			matches = function.apply(packet);
 		}
 		
