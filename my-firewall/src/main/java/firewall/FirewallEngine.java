@@ -24,6 +24,10 @@ public class FirewallEngine {
     public FirewallEngine(RuleSet rules, Action defaultPolicy) {
     		this.rules = rules;
     		this.defaultPolicy = defaultPolicy;
+    		this.rules.getRules().forEach(el -> {
+    			if(el.getAction() == null)
+    				el.setAction(defaultPolicy);
+    		});
     }
 
     public void addRule(Rule rule) {

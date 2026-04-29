@@ -20,13 +20,17 @@ public abstract class Rule implements IRule {
 	protected Direction direction;
 	protected Action action;
 	
-	private Rule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, Direction direction, Action action) {
+	public Rule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, Direction direction, Action action) {
 		super();
 		this.layer = layer;
 		this.protocol = protocol;
 		this.source = source;
 		this.destination = destination;
 		this.direction = direction;
+		this.action = action;
+	}
+	
+	public void setAction(Action action) {
 		this.action = action;
 	}
 
@@ -58,7 +62,7 @@ public abstract class Rule implements IRule {
 	 * evaluate returns true if a packet must be dropped and false if not
 	 * */
 	
-	public Optional<Action> evaluate(MyPacket packet) {
+	public final Optional<Action> evaluate(MyPacket packet) {
 		boolean matches = false;
 		boolean dest = false;
 		boolean src = false;

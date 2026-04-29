@@ -1,9 +1,9 @@
-Manifest-Version: 1.0
+Manifest-Version: 1.1
 Bundle-ManifestVersion: 2
 Bundle-Name: my-firewall
 Bundle-SymbolicName: my-firewall
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-25
+Bundle-Version: 1.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: my.firewall
 Export-Package: elements,
  exceptions,
