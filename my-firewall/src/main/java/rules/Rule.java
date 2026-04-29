@@ -1,7 +1,6 @@
 package rules;
 
 import elements.Layer;
-import utils.RuleUtils;
 
 import java.util.Optional;
 
@@ -11,33 +10,24 @@ import elements.IProtocol;
 import elements.MyPacket;
 import elements.NetworkLayerProtocol;
 import elements.TransportLayerProtocol;
-import logger.LogLevel;
 
-public class Rule implements IRule {
+public abstract class Rule implements IRule, ITriggeringRule {
 	
-	private Layer layer;
-	private IProtocol protocol;
-	private Endpoint source;
-	private Endpoint destination;
-	private ITriggeringRule function;
-	private Direction direction;
-	private RuleState state;
-	private Action action;
+	protected Layer layer;
+	protected IProtocol protocol;
+	protected Endpoint source;
+	protected Endpoint destination;
+	protected Direction direction;
+	protected Action action;
 	
-	private Rule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, ITriggeringRule function, Direction direction, Action action) {
+	private Rule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, Direction direction, Action action) {
 		super();
 		this.layer = layer;
 		this.protocol = protocol;
 		this.source = source;
 		this.destination = destination;
-		this.function = function;
 		this.direction = direction;
-		this.state = new RuleState();
 		this.action = action;
-	}
-	
-	public ITriggeringRule getFunction() {
-		return function;
 	}
 
 	public Endpoint getSource() {
@@ -54,10 +44,6 @@ public class Rule implements IRule {
 	
 	public Direction getDirection() {
 		return direction;
-	}
-	
-	public RuleState getState() {
-		return state;
 	}
 	
 	public Action getAction() {
@@ -107,17 +93,13 @@ public class Rule implements IRule {
 		
 		/* Trigger function */
 		if(matches) {
-			if(this.state.getHitcount() == 0)
-				this.state.setFirstSeen(System.currentTimeMillis());
-			this.state.setLastSeen(System.currentTimeMillis());
-			this.state.increaseHitcount();
-			return Optional.of(function.apply(packet, this));
+			return Optional.of(this.trigger(packet));
 		}
 		
 		return Optional.empty();
 	}
 	
-	public static Rule createDenyLoggingRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, String filename, Direction direction) {
+	/*public static Rule createDenyLoggingRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, String filename, Direction direction) {
 		return new Rule(layer, protocol, source, destination, RuleUtils.getLogDenyFunction(filename, LogLevel.INFO, ""), direction, Action.DENY);
 	}
 	
@@ -135,6 +117,11 @@ public class Rule implements IRule {
 	
 	public static Rule createDefaultAllowRule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, Direction direction) {
 		return new Rule(layer, protocol, source, destination, RuleUtils.getDefaultAllowFunction(), direction, Action.ALLOW);
+	}*/
+
+	@Override
+	public Action trigger(MyPacket packet) {
+		return this.action;
 	}
 
 }

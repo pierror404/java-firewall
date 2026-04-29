@@ -3,24 +3,26 @@ package firewall;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import elements.MyPacket;
 import rules.Action;
 import rules.Rule;
+import rules.RuleSet;
 
 public class FirewallEngine {
 	
 
-    private final List<Rule> rules;
+    private final RuleSet rules;
     private final Action defaultPolicy;
 
     public FirewallEngine(List<Rule> rules) {
-        this(rules, Action.DENY);
+        this(new RuleSet(rules), Action.DENY);
     }
-    
-    public FirewallEngine(List<Rule> rules, Action defaultPolicy) {
-    		this.rules = new CopyOnWriteArrayList<>(rules);
+    public FirewallEngine(RuleSet set) {
+    		this(set, Action.DENY);
+    }
+    public FirewallEngine(RuleSet rules, Action defaultPolicy) {
+    		this.rules = rules;
     		this.defaultPolicy = defaultPolicy;
     }
 
@@ -29,7 +31,7 @@ public class FirewallEngine {
     }
 	
     public boolean evaluate(MyPacket packet) {
-        List<CompletableFuture<Boolean>> futures = rules.stream()
+        List<CompletableFuture<Boolean>> futures = rules.getRules().stream()
                 .map(rule -> CompletableFuture.supplyAsync(() -> { 
                 		Optional<Action> result = rule.evaluate(packet);
                 		Action policy = defaultPolicy;

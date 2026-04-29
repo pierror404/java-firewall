@@ -2,17 +2,7 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import elements.Direction;
-import elements.IPv4;
-import elements.Layer;
-import elements.NetworkLayerProtocol;
-import exceptions.IllegalIPv4Exception;
-import exceptions.IllegalSubnetException;
 import firewall.NativeBridge;
-import rules.Action;
-import rules.Endpoint;
 import rules.Rule;
 
 public class Main {
@@ -21,7 +11,7 @@ public class Main {
         System.out.println("Firewall Java avviato");
         
         List<Rule> rules = new ArrayList<>();
-        try {
+        /*try {
 			rules.add(
 					
 					Rule.createDenyLoggingRule(Layer.NETWORK, NetworkLayerProtocol.ICMP, Action.DENY,
@@ -38,7 +28,7 @@ public class Main {
 		} catch (IllegalIPv4Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
         new NativeBridge(rules).startFirewall();
 	}
 
