@@ -118,11 +118,11 @@ public class Rule implements IRule {
 	}
 	
 	public static Rule createDenyLoggingRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, String filename, Direction direction) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getLogDenyFunction(filename, LogLevel.INFO), direction, Action.DENY);
+		return new Rule(layer, protocol, source, destination, RuleUtils.getLogDenyFunction(filename, LogLevel.INFO, ""), direction, Action.DENY);
 	}
 	
 	public static Rule createAllowLoggingRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, String filename, Direction direction) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getLogAllowFunction(filename, LogLevel.INFO), direction, Action.ALLOW);
+		return new Rule(layer, protocol, source, destination, RuleUtils.getLogAllowFunction(filename, LogLevel.INFO, ""), direction, Action.ALLOW);
 	}
 	
 	public static Rule createTriggerRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, ITriggeringRule function, Direction direction) {

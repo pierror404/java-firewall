@@ -6,17 +6,17 @@ import rules.Action;
 import rules.ITriggeringRule;
 
 public class RuleUtils {
-	public static ITriggeringRule getLogDenyFunction(String filename, LogLevel level) {
+	public static ITriggeringRule getLogDenyFunction(String filename, LogLevel level, String message) {
 		ITriggeringRule logfunction = (packet, _) -> {
-			Logger.writeOnLogFile(packet, filename, level);
+			Logger.writeOnLogFile(packet, filename, level, message);
 			return Action.DENY;
 		};
 		return logfunction;
 	}
 	
-	public static ITriggeringRule getLogAllowFunction(String filename, LogLevel level) {
+	public static ITriggeringRule getLogAllowFunction(String filename, LogLevel level, String message) {
 		ITriggeringRule logfunction = (packet, _) -> {
-			Logger.writeOnLogFile(packet, filename, level);
+			Logger.writeOnLogFile(packet, filename, level, message);
 			return Action.ALLOW;
 		};
 		return logfunction;
