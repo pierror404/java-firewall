@@ -97,26 +97,6 @@ public abstract class Rule implements IRule {
 		
 		return Optional.empty();
 	}
-	
-	/*public static Rule createDenyLoggingRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, String filename, Direction direction) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getLogDenyFunction(filename, LogLevel.INFO, ""), direction, Action.DENY);
-	}
-	
-	public static Rule createAllowLoggingRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, String filename, Direction direction) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getLogAllowFunction(filename, LogLevel.INFO, ""), direction, Action.ALLOW);
-	}
-	
-	public static Rule createTriggerRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, ITriggeringRule function, Direction direction) {
-		return new Rule(layer, protocol, source, destination, function, direction, action);
-	}
-	
-	public static Rule createDefaultDenyRule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, Direction direction) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getDefaultDenyFunction(), direction, Action.DENY);
-	}
-	
-	public static Rule createDefaultAllowRule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, Direction direction) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getDefaultAllowFunction(), direction, Action.ALLOW);
-	}*/
 
 	@Override
 	public Action trigger(MyPacket packet) {
