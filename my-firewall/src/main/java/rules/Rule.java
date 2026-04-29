@@ -2,12 +2,16 @@ package rules;
 
 import elements.Layer;
 import utils.RuleUtils;
+
+import java.util.Optional;
+
 import elements.ApplicationLayerProtocol;
 import elements.Direction;
 import elements.IProtocol;
 import elements.MyPacket;
 import elements.NetworkLayerProtocol;
 import elements.TransportLayerProtocol;
+import logger.LogLevel;
 
 public class Rule implements IRule {
 	
@@ -18,8 +22,9 @@ public class Rule implements IRule {
 	private ITriggeringRule function;
 	private Direction direction;
 	private RuleState state;
+	private Action action;
 	
-	private Rule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, ITriggeringRule function, Direction direction) {
+	private Rule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, ITriggeringRule function, Direction direction, Action action) {
 		super();
 		this.layer = layer;
 		this.protocol = protocol;
@@ -28,6 +33,7 @@ public class Rule implements IRule {
 		this.function = function;
 		this.direction = direction;
 		this.state = new RuleState();
+		this.action = action;
 	}
 	
 	public ITriggeringRule getFunction() {
@@ -53,6 +59,10 @@ public class Rule implements IRule {
 	public RuleState getState() {
 		return state;
 	}
+	
+	public Action getAction() {
+		return action;
+	}
 
 	@Override
 	public Layer getLayer() {
@@ -63,7 +73,7 @@ public class Rule implements IRule {
 	 * evaluate returns true if a packet must be dropped and false if not
 	 * */
 	
-	public boolean evaluate(MyPacket packet) {
+	public Optional<Action> evaluate(MyPacket packet) {
 		boolean matches = false;
 		boolean dest = false;
 		boolean src = false;
@@ -101,43 +111,30 @@ public class Rule implements IRule {
 				this.state.setFirstSeen(System.currentTimeMillis());
 			this.state.setLastSeen(System.currentTimeMillis());
 			this.state.increaseHitcount();
-			matches = function.apply(packet, this);
+			return Optional.of(function.apply(packet, this));
 		}
 		
-		return matches;
+		return Optional.empty();
 	}
 	
-	/* 
-	 * ALLOW and LOG rules must let the packet pass
-	 * DENY and TRIGGER rules must drop the packet
-	 * 
-	 * Difference between ALLOW and LOG:
-	 * 	- LOG just logs the content in a default way
-	 * 	- ALLOW can either do nothing and let the packet pass, or execute a custom function and then let the packet pass
-	 * 
-	 * Difference between DENY and TRIGGER:
-	 * 	- DENY just drops the packet
-	 * 	- TRIGGER can either just drop the packet, or execute a custom function and then drop the packet
-	 */
-	
 	public static Rule createDenyLoggingRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, String filename, Direction direction) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getLogDenyFunction(filename), direction);
+		return new Rule(layer, protocol, source, destination, RuleUtils.getLogDenyFunction(filename, LogLevel.INFO), direction, Action.DENY);
 	}
 	
 	public static Rule createAllowLoggingRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, String filename, Direction direction) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getLogAllowFunction(filename), direction);
+		return new Rule(layer, protocol, source, destination, RuleUtils.getLogAllowFunction(filename, LogLevel.INFO), direction, Action.ALLOW);
 	}
 	
 	public static Rule createTriggerRule(Layer layer, IProtocol protocol, Action action, Endpoint source, Endpoint destination, ITriggeringRule function, Direction direction) {
-		return new Rule(layer, protocol, source, destination, function, direction);
+		return new Rule(layer, protocol, source, destination, function, direction, action);
 	}
 	
 	public static Rule createDefaultDenyRule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, Direction direction) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getDefaultDenyFunction(), direction);
+		return new Rule(layer, protocol, source, destination, RuleUtils.getDefaultDenyFunction(), direction, Action.DENY);
 	}
 	
 	public static Rule createDefaultAllowRule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, Direction direction) {
-		return new Rule(layer, protocol, source, destination, RuleUtils.getDefaultAllowFunction(), direction);
+		return new Rule(layer, protocol, source, destination, RuleUtils.getDefaultAllowFunction(), direction, Action.ALLOW);
 	}
 
 }

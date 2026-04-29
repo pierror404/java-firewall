@@ -1,52 +1,39 @@
 package utils;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import elements.MyPacket;
+import logger.LogLevel;
+import logger.Logger;
+import rules.Action;
 import rules.ITriggeringRule;
 
 public class RuleUtils {
-	public static ITriggeringRule getLogDenyFunction(String filename) {
+	public static ITriggeringRule getLogDenyFunction(String filename, LogLevel level) {
 		ITriggeringRule logfunction = (packet, _) -> {
-			writeOnLogFile(packet, filename);
-			return true;
+			Logger.writeOnLogFile(packet, filename, level);
+			return Action.DENY;
 		};
 		return logfunction;
 	}
 	
-	public static ITriggeringRule getLogAllowFunction(String filename) {
+	public static ITriggeringRule getLogAllowFunction(String filename, LogLevel level) {
 		ITriggeringRule logfunction = (packet, _) -> {
-			writeOnLogFile(packet, filename);
-			return false;
+			Logger.writeOnLogFile(packet, filename, level);
+			return Action.ALLOW;
 		};
 		return logfunction;
 	}
 	
 	public static ITriggeringRule getDefaultDenyFunction() {
 		ITriggeringRule function = (_, _) -> {
-			return true;
+			return Action.DENY;
 		};
 		return function;
 	}
 	
 	public static ITriggeringRule getDefaultAllowFunction() {
 		ITriggeringRule function = (_, _) -> {
-			return false;
+			return Action.ALLOW;
 		};
 		return function;
-	}
-	
-	public static void writeOnLogFile(MyPacket packet, String filename) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		String timestamp = LocalDateTime.now().format(formatter);
-		try (FileWriter writer = new FileWriter(filename, true)) {
-			writer.write("[" + timestamp + "] " + packet.toString() + "\n");
-		} catch (IOException e) {
-            System.err.println("Errore nel logging del pacchetto: " + e.getMessage());
-        }
 	}
 	
 	public static boolean drop() {
@@ -59,14 +46,14 @@ public class RuleUtils {
 	
 	public static ITriggeringRule dropAfterThreshold(int count) {
 		ITriggeringRule function = (_, rule) -> {
-			return rule.getState().getHitcount() >= count;
+			return (rule.getState().getHitcount() >= count) ? Action.DENY : Action.ALLOW;
 		};
 		return function;
 	}
 	
 	public static ITriggeringRule acceptAfterThreshold(int count) {
 		ITriggeringRule function = (_, rule) -> {
-			return rule.getState().getHitcount() < count;
+			return (rule.getState().getHitcount() < count) ? Action.DENY : Action.ALLOW;
 		};
 		return function;
 	}

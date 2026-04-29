@@ -24,7 +24,7 @@ public class Main {
         try {
 			rules.add(
 					
-					Rule.createDenyLoggingRule(Layer.NETWORK, NetworkLayerProtocol.ICMP, Action.LOG,
+					Rule.createDenyLoggingRule(Layer.NETWORK, NetworkLayerProtocol.ICMP, Action.DENY,
 							new Endpoint(Optional.of(IPv4.fromString("192.168.56.1")), Optional.empty(), Optional.empty()), 
 							new Endpoint(Optional.empty(), Optional.empty(), Optional.empty()), 
 							"C:\\Users\\pierl\\dev\\PROVA.txt", Direction.OUT)
