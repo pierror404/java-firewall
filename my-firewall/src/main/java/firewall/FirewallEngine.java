@@ -38,11 +38,11 @@ public class FirewallEngine {
                 		return (policy == Action.DENY); 
                 	})).toList();
 
-            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 
-            return futures.stream()
-                .map(CompletableFuture::join)
-                .anyMatch(Boolean::booleanValue);
+        return futures.stream()
+        		.map(CompletableFuture::join)
+            .anyMatch(Boolean::booleanValue);
     }
 	
 }
