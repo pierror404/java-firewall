@@ -1,7 +1,7 @@
 package rules;
 
-import elements.Layer;
+import elements.MyPacket;
 
 public interface IRule {
-	public Layer getLayer();
+	public Action trigger(MyPacket packet);
 }

@@ -11,24 +11,14 @@ public class Main {
         System.out.println("Firewall Java avviato");
         
         List<Rule> rules = new ArrayList<>();
-        /*try {
-			rules.add(
-					
-					Rule.createDenyLoggingRule(Layer.NETWORK, NetworkLayerProtocol.ICMP, Action.DENY,
-							new Endpoint(Optional.of(IPv4.fromString("192.168.56.1")), Optional.empty(), Optional.empty()), 
-							new Endpoint(Optional.empty(), Optional.empty(), Optional.empty()), 
-							"C:\\Users\\pierl\\dev\\PROVA.txt", Direction.OUT)
-					);
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalSubnetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalIPv4Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+        /*
+         * 
+         * TO CREATE A RULE YOU MUST SPECIFY IT IN A FILE IN THIS PACKAGE
+         * IT MUST EXTEND Rule ABSTRACT CLASS
+         * IF YOU WANT A CUSTOM STATE YOU CAN INCAPSULATE IT IN YOUR CLASS IMPLEMENTATION
+         * IF YOU WANT TO HAVE A CUSTOM BEHAVIOUR FOR YOUR RULE YOU CAN OVERRIDE trigger METHOD IN YOUR CLASS
+         * 
+         * */
         new NativeBridge(rules).startFirewall();
 	}
 

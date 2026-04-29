@@ -11,7 +11,7 @@ import elements.MyPacket;
 import elements.NetworkLayerProtocol;
 import elements.TransportLayerProtocol;
 
-public abstract class Rule implements IRule, ITriggeringRule {
+public abstract class Rule implements IRule {
 	
 	protected Layer layer;
 	protected IProtocol protocol;
@@ -50,7 +50,6 @@ public abstract class Rule implements IRule, ITriggeringRule {
 		return action;
 	}
 
-	@Override
 	public Layer getLayer() {
 		return layer;
 	}
