@@ -30,6 +30,16 @@ public abstract class Rule implements IRule {
 		this.action = action;
 	}
 	
+	public Rule(Layer layer, IProtocol protocol, Endpoint source, Endpoint destination, Direction direction) {
+		super();
+		this.layer = layer;
+		this.protocol = protocol;
+		this.source = source;
+		this.destination = destination;
+		this.direction = direction;
+		this.action = null;
+	}
+	
 	public void setAction(Action action) {
 		this.action = action;
 	}

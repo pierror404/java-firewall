@@ -18,6 +18,9 @@ public class FirewallEngine {
     public FirewallEngine(List<Rule> rules) {
         this(new RuleSet(rules), Action.DENY);
     }
+    public FirewallEngine(List<Rule> rules, Action action) {
+        this(new RuleSet(rules), action);
+    }
     public FirewallEngine(RuleSet set) {
     		this(set, Action.DENY);
     }

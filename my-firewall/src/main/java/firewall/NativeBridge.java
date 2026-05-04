@@ -4,6 +4,7 @@ import java.nio.file.*;
 import java.util.List;
 
 import elements.MyPacket;
+import rules.Action;
 import rules.Rule;
 import utils.MyPacketParser;
 
@@ -13,6 +14,9 @@ public class NativeBridge {
 	
 	public NativeBridge(List<Rule> rules) {
 		firewall = new FirewallEngine(rules);
+	}
+	public NativeBridge(List<Rule> rules, Action action) {
+		firewall = new FirewallEngine(rules, action);
 	}
 	
 	static {
